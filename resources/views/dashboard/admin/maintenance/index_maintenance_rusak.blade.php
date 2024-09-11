@@ -12,7 +12,7 @@
                     <th>No</th>
                     <th>ID Barang</th>
                     <th>Alasan rusak</th>
-                    <th>Biaya Maintenance</th>
+                    <th>Biaya</th>
                     <th>Catatan</th>
                     <th>Kondisi Barang</th>
                 </tr>

@@ -11,6 +11,7 @@ use App\Models\Ruangan;
 use App\Models\SumberPengadaan;
 use App\Models\UnitKerja;
 use Barryvdh\DomPDF\Facade\Pdf;
+use TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -24,13 +25,13 @@ class BarangController extends Controller
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
             $barangs = Barang::whereHas('kondisiBarang', function ($query) {
                $query->where('kondisi_barang', '!=', 'Rusak');
-            })->get();
+            })->paginate(10);
         } else {
             $barangs = Barang::where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->get();
+                ->paginate(2);
         }
 
         return view('dashboard.admin.barang.index', compact('barangs'));
@@ -160,14 +161,16 @@ class BarangController extends Controller
     public function printSticker($id)
     {
         $barang = Barang::findOrFail($id);
-        $pdf = Pdf::loadView('dashboard.admin.barang.print_sticker', compact('barang'));
-        return $pdf->stream('sticker.pdf');
+//        $pdf = Pdf::loadView('dashboard.admin.barang.print_sticker', compact('barang'));
+//        return $pdf->stream('sticker.pdf');
+        return view('dashboard.admin.barang.print_sticker', compact('barang'));
     }
 
     public function printStickerAll()
     {
         $barangs = Barang::all();
-        $pdf = Pdf::loadView('dashboard.admin.barang.print_sticker_all', compact('barangs'));
-        return $pdf->stream('sticker_all.pdf');
+//        $pdf = Pdf::loadView('dashboard.admin.barang.print_sticker_all', compact('barangs'));
+//        return $pdf->stream('sticker_all.pdf');
+        return view('dashboard.admin.barang.print_sticker_all', compact('barangs'));
     }
 }

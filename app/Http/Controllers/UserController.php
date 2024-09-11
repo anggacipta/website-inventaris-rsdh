@@ -23,6 +23,12 @@ class UserController extends Controller
         return view('dashboard.admin.users.create', compact('roles', 'unitKerjas'));
     }
 
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return view('dashboard.admin.users.show', compact('user'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

@@ -25,6 +25,7 @@
                         <td>{{ $user->role->name }}</td>
                         <td>{{ $user->unitKerja->unit_kerja }}</td>
                         <td>
+                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary">Detail User</a>
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline">
                                 @csrf

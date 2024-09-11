@@ -3,7 +3,10 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <div>
-                <img src="{{ asset('assets/images/logos/dark-logo.svg') }}" width="">
+                <img src="{{ asset('assets/images/logos/LOGO_RS.png') }}" width="50" height="50">
+            </div>
+            <div>
+                <p class="fs-4 fw-bold mt-3" style="">Website Inventaris</p>
             </div>
             <div>
                 <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">

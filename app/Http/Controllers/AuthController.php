@@ -23,12 +23,12 @@ class AuthController extends Controller
             $roleName = auth()->user()->role->name;
             switch ($roleName) {
                 case 'server':
-                    return redirect()->intended('/dashboard');
+                    return redirect()->route('dashboard.index');
                 case 'user':
                  case 'iprs':
-                    return redirect()->intended('/barang');
+                    return redirect()->route('barang.index');
                 default:
-                    return redirect()->intended('/home');
+                    return redirect()->route('login');
             }
         }
 

@@ -10,6 +10,4 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 });
 
-
-
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');

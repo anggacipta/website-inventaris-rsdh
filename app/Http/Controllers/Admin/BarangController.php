@@ -69,7 +69,7 @@ class BarangController extends Controller
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 
         $barangData = $request->all();
@@ -112,7 +112,7 @@ class BarangController extends Controller
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
-            'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'photo' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 
         $barang = Barang::find($id);
@@ -122,7 +122,16 @@ class BarangController extends Controller
         $barangData['tahun_pengadaan'] = Carbon::createFromFormat('m/d/Y', $request->tahun_pengadaan)->format('Y-m-d');
 
         if ($request->hasFile('photo')) {
-            $imageName = time().'.'.$request->photo->extension(); // Menambahkan timestamp ke nama file
+            // Delete the old photo if it exists
+            if ($barang->photo) {
+                $oldPhotoPath = public_path('images/' . $barang->photo);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
+            }
+
+            // Save the new photo
+            $imageName = time().'.'.$request->photo->extension(); // Add timestamp to the filename
             $request->photo->move(public_path('images'), $imageName);
             $barangData['photo'] = $imageName;
         }

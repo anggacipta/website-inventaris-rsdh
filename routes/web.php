@@ -7,6 +7,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
 
     // Route Barang
+    Route::get('barang/trash', [\App\Http\Controllers\Admin\BarangController::class, 'trash'])->name('barang.trash');
+    Route::patch('/barang/restore/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'restore'])->name('barang.restore');
+    Route::delete('/barang/forceDelete/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroyPermanent'])->name('barang.forceDelete');
     Route::resource('barang', \App\Http\Controllers\Admin\BarangController::class);
 
     // Route Jenis Barang

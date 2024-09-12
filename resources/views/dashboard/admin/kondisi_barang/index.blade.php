@@ -59,10 +59,10 @@
                         <td>{{ $kondisi->kondisi_barang }}</td>
                         <td>
                             <a href="{{ route('kondisi-barang.edit', $kondisi->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('kondisi-barang.destroy', $kondisi->id) }}" method="post" class="d-inline">
+                            <form action="{{ route('kondisi-barang.destroy', $kondisi->id) }}" method="post" class="d-inline delete-form">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -72,4 +72,28 @@
         </div>
         @include('dashboard.admin.layouts.footer')
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Apakah kamu yakin?',
+                        text: "Kamu tidak akan bisa mengembalikan data ini!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, hapus!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

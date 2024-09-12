@@ -10,7 +10,7 @@
                 <div>
                     <a href="{{ route('print.sticker.all') }}" class="btn text-light" style="background-color: darkgreen">Print All Label</a>
                     @can('create.barang')
-                    <a href="{{ route('barang.create') }}" class="btn btn-primary">Tambah Barang</a>
+                        <a href="{{ route('barang.create') }}" class="btn btn-primary">Tambah Barang</a>
                     @endcan
                 </div>
             </div>
@@ -32,8 +32,6 @@
                         <th>Merk Barang</th>
                         <th>Kondisi Barang</th>
                         <th>Keterangan</th>
-                        <th>Print Label</th>
-                        <th>Maintenance</th>
                         <th>Aksi</th>
                     </tr>
                     </thead>
@@ -54,27 +52,17 @@
                             <td>{{ $barang->merkBarang->merk_barang }}</td>
                             <td>{{ $barang->kondisiBarang->kondisi_barang }}</td>
                             <td>{{ $barang->keterangan }}</td>
-                            <td><a href="{{ route('print.sticker', $barang->id) }}" class="btn text-light" style="background-color: deepskyblue">Print</a></td>
-                            <td>
-                                @if($barang->kondisiBarang->kondisi_barang == 'Maintenance' || $barang->kondisiBarang->kondisi_barang == 'Maintenance Lanjutan')
-                                    <span class="btn btn-info">Sedang Maintenance</span>
-                                @elseif($barang->kondisiBarang->kondisi_barang == 'Rusak')
-                                    <span class="btn btn-danger">Barang telah rusak</span>
-                                @else
-                                    <a href="{{ route('maintenance.create', $barang->id) }}" class="btn btn-success">Maintenance</a>
-                                @endif
-                            </td>
                             <td class="">
-                                @can('update.barang')
-                                <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning mb-2">Edit</a>
-                                @endcan
-                                @can('delete.barang')
-                                <form action="{{ route('barang.destroy', $barang->id) }}" method="post" class="d-inline delete-form">
+                                <form action="{{ route('barang.restore', $barang->id) }}" method="post" class="d-inline restore-form">
+                                    @csrf
+                                    @method('patch')
+                                    <button type="submit" class="btn btn-success mb-2">Pulihkan data ini</button>
+                                </form>
+                                <form action="{{ route('barang.forceDelete', $barang->id) }}" method="post" class="d-inline force-delete-form">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                    <button type="submit" class="btn btn-danger">Hapus data permanen</button>
                                 </form>
-                                @endcan
                             </td>
                         </tr>
                     @endforeach
@@ -90,13 +78,37 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const deleteForms = document.querySelectorAll('.delete-form');
+            const deleteForms = document.querySelectorAll('.restore-form');
             deleteForms.forEach(form => {
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
                     Swal.fire({
                         title: 'Apakah kamu yakin?',
-                        text: "Kamu dapat mengembalikan data ini nantinya",
+                        text: "Data ini sudah dihapus, kamu ingin mengembalikan data ini?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, pulihkan!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.force-delete-form');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Apakah kamu yakin?',
+                        text: "Data ini akan benar benar dihapus, kamu tidak akan bisa mengembalikan data ini lagi!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

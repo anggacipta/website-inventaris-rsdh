@@ -107,6 +107,14 @@
                         <span class="hide-menu">Data Barang</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('barang.trash') }}" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-folder-minus"></i>
+                    </span>
+                        <span class="hide-menu">Data Barang Dihapus</span>
+                    </a>
+                </li>
                 @endcan
                 @can('create.barang')
                 <li class="sidebar-item">
@@ -127,7 +135,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('maintenance.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="ti ti-building-warehouse"></i>
                         </span>
                         <span class="hide-menu">Data Maintenance</span>
                     </a>
@@ -137,7 +145,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('maintenance.lanjutan.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="ti ti-hammer"></i>
                         </span>
                         <span class="hide-menu">Data Maintenance Lanjutan</span>
                     </a>
@@ -147,7 +155,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('maintenance.rusak.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="ti ti-home-minus"></i>
                         </span>
                         <span class="hide-menu">Data Barang Rusak</span>
                     </a>
@@ -157,7 +165,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('maintenance.diperbaiki.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="ti ti-home-plus"></i>
                         </span>
                         <span class="hide-menu">Data Barang Berhasil Perbaikan</span>
                     </a>

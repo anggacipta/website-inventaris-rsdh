@@ -26,16 +26,34 @@ class BarangController extends Controller
 //            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
 //               $query->where('kondisi_barang', '!=', 'Rusak');
 //            })->paginate(10);
-            $barangs = Barang::query()->paginate(10);
+            $barangs = Barang::withoutTrashed()->paginate(10);
         } else {
             $barangs = Barang::where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->paginate(10);
+                ->withoutTrashed()->paginate(10);
         }
 
         return view('dashboard.admin.barang.index', compact('barangs'));
+    }
+
+    public function trash()
+    {
+        $barangs = Barang::onlyTrashed()->paginate(10);
+        return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs'));
+    }
+
+    public function restore($id)
+    {
+        $barang = Barang::withTrashed()->find($id);
+
+        if ($barang) {
+            $barang->restore();
+            return redirect()->route('barang.index')->with('success', 'Barang berhasil dipulihkan');
+        }
+
+        return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
     }
 
     public function create()
@@ -49,13 +67,6 @@ class BarangController extends Controller
         $sumber_pengadaans = SumberPengadaan::all();
         return view('dashboard.admin.barang.create', compact('unit_kerjas', 'merk_barangs',
             'jenis_barangs', 'kondisi_barangs', 'sumber_pengadaans'));
-    }
-
-    public function ruangan(Request $request)
-    {
-        $search = $request->get('search');
-        $ruangans = Ruangan::where('nama_ruang', 'like', "%$search%")->get();
-        return view('dashboard.admin.barang.ruangan', compact('ruangans'));
     }
 
     public function store(Request $request)
@@ -147,6 +158,20 @@ class BarangController extends Controller
         $barang = Barang::find($id);
 
         if ($barang) {
+            // Delete the Barang instance
+            $barang->delete();
+
+            return redirect()->route('barang.index')->with('error', 'Barang berhasil dihapus');
+        }
+
+        return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
+    }
+
+    public function destroyPermanent($id)
+    {
+        $barang = Barang::withTrashed()->find($id);
+
+        if ($barang) {
             // Delete the file if it exists
             $filePath = public_path('images/' . $barang->photo);
             if (file_exists($filePath)) {
@@ -154,9 +179,9 @@ class BarangController extends Controller
             }
 
             // Delete the Barang instance
-            $barang->delete();
+            $barang->forceDelete();
 
-            return redirect()->route('barang.index')->with('error', 'Barang berhasil dihapus');
+            return redirect()->route('barang.trash')->with('error', 'Barang berhasil dihapus secara permanen');
         }
 
         return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');

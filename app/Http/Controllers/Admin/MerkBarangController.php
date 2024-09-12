@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\MerkBarang;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class MerkBarangController extends Controller
 {
     public function index()
     {
+        MerkBarang::ensureDefaultCategoryExists();
         $merks = MerkBarang::all();
         return view('dashboard.admin.merk_barang.index', compact('merks'));
     }
@@ -47,7 +49,15 @@ class MerkBarangController extends Controller
 
     public function destroy($id)
     {
-        MerkBarang::find($id)->delete();
+        MerkBarang::ensureDefaultCategoryExists(); // Ensure default category exists
+
+        $kategori = MerkBarang::find($id);
+        if ($kategori) {
+            // Update related records to default category
+            Barang::where('merk_barang_id', $id)->update(['merk_barang_id' => 1]);
+            $kategori->delete();
+        }
+
         return redirect()->route('merk-barang.index')
             ->with('success', 'Merk Barang deleted successfully');
     }

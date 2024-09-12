@@ -7,8 +7,8 @@
             <table id="" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>No</th>
                     <th>ID Barang</th>
+                    <th>Nama Barang</th>
                     <th>Unit Kerja</th>
                     <th>Alasan rusak</th>
                     <th>Kondisi Barang</th>
@@ -19,8 +19,8 @@
                 <tbody>
                 @foreach ($maintenances as $maint)
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{ $maint->barang->id }}</td>
+                        <th scope="row">{{ $maint->barang->id }}</th>
+                        <td>{{ $maint->barang->nama_barang }}</td>
                         <td>{{ $maint->barang->unitKerja->unit_kerja }}</td>
                         <td>{{ $maint->alasan_rusak }}</td>
                         <td>{{ $maint->kondisiBarang->kondisi_barang }}</td>

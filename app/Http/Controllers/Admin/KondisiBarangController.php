@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\KondisiBarang;
+use App\Models\Maintenance;
 use Illuminate\Http\Request;
 
 class KondisiBarangController extends Controller
 {
     public function index()
     {
+        KondisiBarang::ensureDefaultCategoryExists();
         $kon_barangs = KondisiBarang::all();
         return view('dashboard.admin.kondisi_barang.index', compact('kon_barangs'));
     }
@@ -47,7 +50,16 @@ class KondisiBarangController extends Controller
 
     public function destroy($id)
     {
-        KondisiBarang::find($id)->delete();
+        KondisiBarang::ensureDefaultCategoryExists(); // Ensure default category exists
+
+        $kategori = KondisiBarang::find($id);
+        if ($kategori) {
+            // Update related records to default category
+            Barang::where('kondisi_barang_id', $id)->update(['kondisi_barang_id' => 1]);
+            Maintenance::where('kondisi_barang_id', $id)->update(['kondisi_barang_id' => 1]);
+            $kategori->delete();
+        }
+
         return redirect()->route('kondisi-barang.index')
             ->with('success', 'Kondisi Barang deleted successfully');
     }

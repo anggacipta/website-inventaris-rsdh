@@ -15,6 +15,10 @@ class VendorSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\Vendor::create([
+            'nama_vendor' => 'Default Kategori',
+        ]);
+
         Vendor::create([
             'nama_vendor' => 'PT. Merdeka Kita'
         ]);

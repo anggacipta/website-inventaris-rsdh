@@ -15,6 +15,10 @@ class JenisBarang extends Seeder
     public function run()
     {
         \App\Models\JenisBarang::create([
+            'jenis_barang' => 'Default Kategori',
+        ]);
+
+        \App\Models\JenisBarang::create([
             'jenis_barang' => 'Elektronik',
         ]);
 

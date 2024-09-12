@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\JenisBarang;
 
@@ -10,6 +12,7 @@ class JenisBarangController extends Controller
 {
     public function index()
     {
+        JenisBarang::ensureDefaultCategoryExists();
         $jenis_barangs = JenisBarang::all();
         return view('dashboard.admin.jenis_barang.index', compact('jenis_barangs'));
     }
@@ -47,7 +50,15 @@ class JenisBarangController extends Controller
 
     public function destroy($id)
     {
-        JenisBarang::find($id)->delete();
+        JenisBarang::ensureDefaultCategoryExists(); // Ensure default category exists
+
+        $kategori = JenisBarang::find($id);
+        if ($kategori) {
+            // Update related records to default category
+            Barang::where('jenis_barang_id', $id)->update(['jenis_barang_id' => 1]);
+            $kategori->delete();
+        }
+
         return redirect()->route('jenis-barang.index')
             ->with('success', 'Jenis Barang deleted successfully');
     }

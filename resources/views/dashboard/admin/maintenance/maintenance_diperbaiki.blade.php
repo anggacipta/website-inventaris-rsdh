@@ -40,7 +40,7 @@
                                 <label for="kondisi_barang" class="form-label">Diperbaiki Oleh</label>
                                 <select name="diperbaiki" class="form-control" id="kondisi_barang">
                                     <option value="server">Server</option>
-                                    <option value="server">IPRS</option>
+                                    <option value="ipsrs">IPSRS</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>

@@ -15,6 +15,10 @@ class MerkBarang extends Seeder
     public function run()
     {
         \App\Models\MerkBarang::create([
+            'merk_barang' => 'Default Kategori',
+        ]);
+
+        \App\Models\MerkBarang::create([
             'merk_barang' => 'Asus',
         ]);
     }

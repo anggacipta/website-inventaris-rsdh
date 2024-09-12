@@ -23,15 +23,16 @@ class BarangController extends Controller
         $unitKerjaId = $user->unit_kerja_id;
 
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
-            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
-               $query->where('kondisi_barang', '!=', 'Rusak');
-            })->paginate(10);
+//            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
+//               $query->where('kondisi_barang', '!=', 'Rusak');
+//            })->paginate(10);
+            $barangs = Barang::query()->paginate(10);
         } else {
             $barangs = Barang::where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->paginate(2);
+                ->paginate(10);
         }
 
         return view('dashboard.admin.barang.index', compact('barangs'));
@@ -106,7 +107,7 @@ class BarangController extends Controller
             'nama_barang' => 'required',
             'kode_barang' => 'required',
             'unit_kerja_id' => 'required',
-            'kondisi_barang_id' => 'required',
+//            'kondisi_barang_id' => 'required',
             'jenis_barang_id' => 'required',
             'merk_barang_id' => 'required',
             'sumber_pengadaan_id' => 'required',

@@ -58,6 +58,8 @@
                             <td>
                                 @if($barang->kondisiBarang->kondisi_barang == 'Maintenance' || $barang->kondisiBarang->kondisi_barang == 'Maintenance Lanjutan')
                                     <span class="btn btn-info">Sedang Maintenance</span>
+                                @elseif($barang->kondisiBarang->kondisi_barang == 'Rusak')
+                                    <span class="btn btn-danger">Barang telah rusak</span>
                                 @else
                                     <a href="{{ route('maintenance.create', $barang->id) }}" class="btn btn-success">Maintenance</a>
                                 @endif

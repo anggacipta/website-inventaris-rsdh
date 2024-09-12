@@ -15,6 +15,10 @@ class KondisiBarang extends Seeder
     public function run()
     {
         \App\Models\KondisiBarang::create([
+            'kondisi_barang' => 'Default Kategori',
+        ]);
+
+        \App\Models\KondisiBarang::create([
             'kondisi_barang' => 'Normal',
         ]);
 

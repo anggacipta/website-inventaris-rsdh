@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\SumberPengadaan;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class SumberPengadaanController extends Controller
 {
     public function index()
     {
+        SumberPengadaan::ensureDefaultCategoryExists();
         $sumbers = SumberPengadaan::all();
         return view('dashboard.admin.sumber_pengadaan.index', compact('sumbers'));
     }
@@ -47,6 +49,14 @@ class SumberPengadaanController extends Controller
 
     public function destroy($id)
     {
+        SumberPengadaan::ensureDefaultCategoryExists(); // Ensure default category exists
+
+        $kategori = SumberPengadaan::find($id);
+        if ($kategori) {
+            // Update related records to default category
+            Barang::where('sumber_pengadaan_id', $id)->update(['sumber_pengadaan_id' => 1]);
+            $kategori->delete();
+        }
         SumberPengadaan::find($id)->delete();
         return redirect()->route('sumber-pengadaan.index')
             ->with('success', 'Sumber Pengadaan deleted successfully');

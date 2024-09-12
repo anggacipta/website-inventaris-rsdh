@@ -15,6 +15,10 @@ class SumberPengadaan extends Seeder
     public function run()
     {
         \App\Models\SumberPengadaan::create([
+            'sumber_pengadaan' => 'Default Kategori',
+        ]);
+
+        \App\Models\SumberPengadaan::create([
             'sumber_pengadaan' => 'RSDH',
         ]);
 

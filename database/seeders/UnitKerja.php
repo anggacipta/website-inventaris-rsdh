@@ -15,6 +15,10 @@ class UnitKerja extends Seeder
     public function run()
     {
         \App\Models\UnitKerja::create([
+            'unit_kerja' => 'Default Kategori',
+        ]);
+
+        \App\Models\UnitKerja::create([
             'unit_kerja' => 'Yayasan',
         ]);
         \App\Models\UnitKerja::create([

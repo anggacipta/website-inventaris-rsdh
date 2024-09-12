@@ -9,8 +9,8 @@
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>No</th>
                     <th>ID Barang</th>
+                    <th>Nama Barang</th>
                     <th>Alasan rusak</th>
                     <th>Biaya Maintenance</th>
                     <th>Catatan</th>
@@ -23,8 +23,8 @@
                 <tbody>
                 @foreach ($maintenances as $maint)
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{ $maint->barang->id }}</td>
+                        <th scope="row">{{ $maint->barang->id }}</th>
+                        <td>{{ $maint->barang->nama_barang }}</td>
                         <td>{{ $maint->alasan_rusak }}</td>
                         <td>{{ 'Rp' . number_format($maint->harga, 2, ',', '.') }}</td>
                         <td>{{ $maint->catatan }}</td>

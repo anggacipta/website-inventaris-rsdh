@@ -84,26 +84,19 @@
                                                aria-describedby="emailHelp" <input type="text" name="tahun_pengadaan" value="{{ date('m/d/Y', strtotime($barang->tahun_pengadaan)) }}">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="kondisi_barang" class="form-label">Kondisi Barang</label>
-                                        <select class="form-control js-example-basic-single" name="kondisi_barang_id"
-                                                id="kondisi_barang">
-                                            <option>Pilih Kondisi Barang</option>
-                                            @foreach ($kondisi_barangs as $kondisiBarang)
-                                                <option value="{{ $kondisiBarang->id }}" {{ $barang->kondisiBarang->id == $kondisiBarang->id ? 'selected' : '' }}>{{ $kondisiBarang->kondisi_barang }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="harga" class="form-label">Harga Barang</label>
-                                        <input type="number" name="harga" class="form-control" id="harga"
-                                               aria-describedby="emailHelp" value="{{ $barang->harga }}">
-                                    </div>
-                                </div>
+{{--                                <div class="col-md-6">--}}
+{{--                                    <div class="mb-3">--}}
+{{--                                        <label for="kondisi_barang" class="form-label">Kondisi Barang</label>--}}
+{{--                                        <select class="form-control js-example-basic-single" name="kondisi_barang_id"--}}
+{{--                                                id="kondisi_barang">--}}
+{{--                                            <option>Pilih Kondisi Barang</option>--}}
+{{--                                            @foreach ($kondisi_barangs as $kondisiBarang)--}}
+{{--                                                <option value="{{ $kondisiBarang->id }}" {{ $barang->kondisiBarang->id == $kondisiBarang->id ? 'selected' : '' }}>{{ $kondisiBarang->kondisi_barang }}--}}
+{{--                                                </option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="sumber_pengadaan" class="form-label">Sumber Pengadaan</label>
@@ -115,6 +108,13 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="harga" class="form-label">Harga Barang</label>
+                                        <input type="number" name="harga" class="form-control" id="harga"
+                                               aria-describedby="emailHelp" value="{{ $barang->harga }}">
                                     </div>
                                 </div>
                             </div>

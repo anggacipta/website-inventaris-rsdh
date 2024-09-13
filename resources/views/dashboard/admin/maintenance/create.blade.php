@@ -14,7 +14,7 @@
                             <input type="hidden" id="barangId" name="barang_id" value="{{ $barang->id }}">
                             <div class="mb-3">
                                 <label for="keterangan" class="form-label">Kenapa bisa rusak</label>
-                                <textarea class="form-control" name="alasan_rusak" id="keterangan" rows="6"></textarea>
+                                <textarea class="form-control" name="alasan_rusak" id="keterangan" required rows="6"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>

@@ -24,11 +24,11 @@
                             <input type="hidden" id="barangId" name="barang_id" value="{{ $maintenance->barang_id }}">
                             <div class="mb-3">
                                 <label for="keterangan" class="form-label">Catatan</label>
-                                <textarea class="form-control" name="catatan" id="keterangan" rows="6"></textarea>
+                                <textarea class="form-control" name="catatan" id="keterangan" rows="6" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="biaya" class="form-label">Biaya Maintenance</label>
-                                <input type="number" name="harga" class="form-control" id="biaya" aria-describedby="emailHelp">
+                                <input type="number" name="harga" class="form-control" id="biaya" required aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>

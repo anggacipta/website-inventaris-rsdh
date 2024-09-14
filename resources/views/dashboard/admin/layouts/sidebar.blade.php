@@ -107,12 +107,22 @@
                         <span class="hide-menu">Data Barang</span>
                     </a>
                 </li>
+                @endcan
+                @can('barang.dihapus')
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('barang.trash') }}" aria-expanded="false">
-                    <span>
-                        <i class="ti ti-folder-minus"></i>
-                    </span>
+                <span>
+                    <i class="ti ti-folder-minus"></i>
+                </span>
                         <span class="hide-menu">Data Barang Dihapus</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('log.barang') }}" aria-expanded="false">
+                <span>
+                    <i class="ti ti-folder-off"></i>
+                </span>
+                        <span class="hide-menu">Log Barang Dihapus</span>
                     </a>
                 </li>
                 @endcan

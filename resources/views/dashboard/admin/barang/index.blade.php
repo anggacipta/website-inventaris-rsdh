@@ -69,11 +69,7 @@
                                 <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning mb-2">Edit</a>
                                 @endcan
                                 @can('delete.barang')
-                                <form action="{{ route('barang.destroy', $barang->id) }}" method="post" class="d-inline delete-form">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                </form>
+                                <a href="{{ route('create.log.barang', $barang->id) }}" class="btn btn-danger">Hapus</a>
                                 @endcan
                             </td>
                         </tr>

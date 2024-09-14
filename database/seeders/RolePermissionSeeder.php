@@ -19,7 +19,8 @@ class RolePermissionSeeder extends Seeder
         $rolesPermissions = [
             'user' => ['read.barang', 'maintenance'],
             'iprs' => ['data.master', 'read.barang', 'create.barang', 'update.barang', 'delete.barang', 'maintenance', 'maintenance.lanjut', 'maintenance.rusak', 'maintenance.diperbaiki'],
-            'server' => ['dashboard', 'data.master', 'read.barang', 'create.barang', 'update.barang', 'delete.barang', 'maintenance', 'maintenance.lanjut', 'maintenance.rusak', 'maintenance.diperbaiki', 'users', 'roles', 'permission'],
+            'server' => ['dashboard', 'data.master', 'read.barang', 'create.barang', 'update.barang', 'delete.barang', 'maintenance', 'maintenance.lanjut', 'maintenance.rusak',
+                'maintenance.diperbaiki', 'users', 'roles', 'permission', 'barang.dihapus'],
         ];
 
         foreach ($rolesPermissions as $role => $permissions) {

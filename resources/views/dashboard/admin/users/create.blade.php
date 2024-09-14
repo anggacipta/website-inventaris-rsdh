@@ -21,7 +21,7 @@
                             <form action="{{ route('users.store') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name:</label>
+                                    <label for="name" class="form-label">Nama:</label>
                                     <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
                                     @if ($errors->has('name'))
                                         <div class="error">{{ $errors->first('name') }}</div>
@@ -29,7 +29,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Username:</label>
+                                    <label for="username" class="form-label">Username(untuk masuk website):</label>
                                     <input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" required>
                                     @if ($errors->has('username'))
                                         <div class="error">{{ $errors->first('username') }}</div>
@@ -45,7 +45,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password:</label>
+                                    <label for="password" class="form-label">Password(minimal 8 karakter):</label>
                                     <input type="password" name="password" class="form-control" id="password" required>
                                     @if ($errors->has('password'))
                                         <div class="error">{{ $errors->first('password') }}</div>

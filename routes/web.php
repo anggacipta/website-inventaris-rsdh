@@ -12,6 +12,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/barang/forceDelete/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroyPermanent'])->name('barang.forceDelete');
     Route::resource('barang', \App\Http\Controllers\Admin\BarangController::class);
 
+    // Route Log Barang
+    Route::get('/log-barang', [\App\Http\Controllers\Admin\LogBarangController::class, 'index'])->name('log.barang');
+    Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\LogBarangController::class, 'create'])->name('create.log.barang');
+    Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\LogBarangController::class, 'store'])->name('hapus.barang');
+
     // Route Jenis Barang
     Route::resource('jenis-barang', \App\Http\Controllers\Admin\JenisBarangController::class);
 

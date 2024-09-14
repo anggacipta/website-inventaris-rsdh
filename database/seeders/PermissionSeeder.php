@@ -21,6 +21,7 @@ class PermissionSeeder extends Seeder
             'create.barang',
             'update.barang',
             'delete.barang',
+            'barang.dihapus',
             'maintenance',
             'maintenance.lanjut',
             'maintenance.rusak',

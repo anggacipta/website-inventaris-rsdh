@@ -23,7 +23,7 @@
                 <tbody>
                 @foreach ($maintenances as $maint)
                     <tr>
-                        <th scope="row">{{ $maint->barang->id }}</th>
+                        <th scope="row">{{ $maint->barang_id }}</th>
                         <td>{{ $maint->barang->nama_barang }}</td>
                         <td>{{ $maint->alasan_rusak }}</td>
                         <td>{{ 'Rp' . number_format($maint->harga, 2, ',', '.') }}</td>

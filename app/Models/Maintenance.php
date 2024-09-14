@@ -22,7 +22,8 @@ class Maintenance extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class, 'barang_id');
+        // Get data with soft delete
+        return $this->belongsTo(Barang::class, 'barang_id')->withTrashed();
     }
 
     public function kondisiBarang()

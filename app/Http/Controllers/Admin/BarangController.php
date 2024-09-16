@@ -17,18 +17,27 @@ use Illuminate\Support\Carbon;
 
 class BarangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
         $unitKerjaId = $user->unit_kerja_id;
+        $search = $request->input('search');
+
+        $query = Barang::query();
+
+        if ($search) {
+            $query->where('nama_barang', 'like', '%' . $search . '%')
+                ->orWhere('kode_barang', 'like', '%' . $search . '%')
+                ->orWhere('distributor', 'like', '%' . $search . '%');
+        }
 
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
 //            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
 //               $query->where('kondisi_barang', '!=', 'Rusak');
 //            })->paginate(10);
-            $barangs = Barang::withoutTrashed()->paginate(10);
+            $barangs = $query->withoutTrashed()->paginate(10);
         } else {
-            $barangs = Barang::where('unit_kerja_id', $unitKerjaId)
+            $barangs = $query->where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
@@ -60,11 +69,11 @@ class BarangController extends Controller
     {
 //        $totalBarang = Barang::where('ruang_id', $ruangan_id)->count() + 1;
 //        $kode_barang = 'BRG' . str_pad($totalBarang, 3, '0', STR_PAD_LEFT);
-        $unit_kerjas = UnitKerja::all();
-        $merk_barangs = MerkBarang::all();
-        $jenis_barangs = JenisBarang::all();
-        $kondisi_barangs = KondisiBarang::all();
-        $sumber_pengadaans = SumberPengadaan::all();
+        $unit_kerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
+        $merk_barangs = MerkBarang::query()->where('merk_barang', '!=', 'Default Kategori')->get();
+        $jenis_barangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
+        $kondisi_barangs = KondisiBarang::query()->where('kondisi_barang', '!=', 'Default Kategori')->get();
+        $sumber_pengadaans = SumberPengadaan::query()->where('sumber_pengadaan', '!=', 'Default Kategori')->get();
         return view('dashboard.admin.barang.create', compact('unit_kerjas', 'merk_barangs',
             'jenis_barangs', 'kondisi_barangs', 'sumber_pengadaans'));
     }

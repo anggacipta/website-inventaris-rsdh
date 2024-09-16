@@ -10,11 +10,15 @@
                 <div>
                     <a href="{{ route('print.sticker.all') }}" class="btn text-light" style="background-color: darkgreen">Print All Label</a>
                     @can('create.barang')
-                    <a href="{{ route('barang.create') }}" class="btn btn-primary">Tambah Barang</a>
+                        <a href="{{ route('barang.create') }}" class="btn btn-primary">Tambah Barang</a>
                     @endcan
                 </div>
             </div>
             <div class="table-responsive">
+                <form action="{{ route('barang.index') }}" method="GET" class="d-inline">
+                    <input type="text" name="search" placeholder="Cari nama, distributor atau kode barang" value="{{ request('search') }}" class="form-control d-inline" style="width: 200px;">
+                    <button type="submit" class="mt-2 mb-3 ms-2 btn btn-primary">Search</button>
+                </form>
                 <table id="" class="table table-bordered table-striped">
                     <thead>
                     <tr>

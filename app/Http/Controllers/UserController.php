@@ -35,6 +35,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'nullable|string|max:15',
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
             'unit_kerja_id' => 'required|exists:unit_kerjas,id',
@@ -44,6 +45,7 @@ class UserController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
             'unit_kerja_id' => $request->unit_kerja_id,
@@ -57,8 +59,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $unitKerjas = UnitKerja::all();
-        return view('dashboard.admin.users.edit', compact('user', 'unitKerjas'));
+        $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
+        $roles = Role::all();
+        return view('dashboard.admin.users.edit', compact('user', 'unitKerjas', 'roles'));
     }
 
     public function update(Request $request, User $user)
@@ -66,13 +69,17 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15',
             'password' => 'nullable|string|min:8|confirmed',
             'unit_kerja_id' => 'required|exists:unit_kerjas,id',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->unit_kerja_id = $request->unit_kerja_id;
+        $user->role_id = $request->role_id;
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }

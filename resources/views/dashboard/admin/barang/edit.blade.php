@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Tambah Data Barang</h5>
+                <h5 class="card-title fw-semibold mb-4">Edit Data Barang</h5>
                 <div class="card">
                     <div class="card-body">
                         @if ($errors->any())
@@ -147,7 +147,7 @@
                 var jenisBarangId = $("select[name='jenis_barang_id']").val();
                 var merkBarangId = $("select[name='merk_barang_id']").val();
                 var tahunPengadaan = $("input[name='tahun_pengadaan']").val();
-                var kondisiBarangId = $("select[name='kondisi_barang_id']").val();
+                // var kondisiBarangId = $("select[name='kondisi_barang_id']").val();
                 var harga = $("input[name='harga']").val();
                 var sumberPengadaanId = $("select[name='sumber_pengadaan_id']").val();
 
@@ -166,10 +166,12 @@
                 } else if (!tahunPengadaan) {
                     alert('Tahun Pengadaan harus diisi!');
                     e.preventDefault();
-                } else if (!kondisiBarangId || kondisiBarangId === 'Pilih Kondisi Barang') {
-                    alert('Kondisi Barang harus diisi!');
-                    e.preventDefault();
-                } else if (!harga) {
+                }
+                // else if (!kondisiBarangId || kondisiBarangId === 'Pilih Kondisi Barang') {
+                //     alert('Kondisi Barang harus diisi!');
+                //     e.preventDefault();
+                // }
+                else if (!harga) {
                     alert('Harga harus diisi!');
                     e.preventDefault();
                 } else if (!sumberPengadaanId || sumberPengadaanId === 'Pilih Sumber Pengadaan') {

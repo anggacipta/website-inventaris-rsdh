@@ -32,6 +32,11 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="phone" class="form-label">Phone:</label>
+                                <input type="number" name="phone" class="form-control" id="phone" value="{{ $user->phone }}">
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="unit_kerja_id" class="form-label">Unit Kerja</label>
                                 <select class="form-control js-example-basic-single" name="unit_kerja_id" id="unit_kerja_id">
                                     <option value="">Pilih Unit Kerja</option>
@@ -41,6 +46,19 @@
                                 </select>
                                 @if ($errors->has('unit_kerja_id'))
                                     <div class="error">{{ $errors->first('unit_kerja_id') }}</div>
+                                @endif
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="role_id" class="form-label">Roles</label>
+                                <select class="form-control js-example-basic-single" name="role_id" id="role_id">
+                                    <option value="">Pilih Roles</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('role_id'))
+                                    <div class="error">{{ $errors->first('role_id') }}</div>
                                 @endif
                             </div>
 

@@ -11,6 +11,7 @@
                     <th>No</th>
                     <th>Nama User</th>
                     <th>Email</th>
+                    <th>No HP</th>
                     <th>Role</th>
                     <th>Unit Kerja</th>
                     <th>Aksi</th>
@@ -22,6 +23,7 @@
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone }}</td>
                         <td>{{ $user->role->name }}</td>
                         <td>{{ $user->unitKerja->unit_kerja }}</td>
                         <td>

@@ -64,11 +64,6 @@
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">Hapus</button>
                             </form>
-                            <form action="{{ route('barang.forceDelete', $barang->id) }}" method="post" class="d-inline force-delete-form">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Delete Permanently</button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

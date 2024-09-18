@@ -6,12 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\KondisiBarang;
 use App\Models\Maintenance;
+use App\Models\Role;
+use App\Models\UnitKerja;
+use App\Models\User;
 use App\Models\Vendor;
+use App\Service\FonnteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class MaintenanceController extends Controller
 {
+    protected $fonnteService;
+
+    public function __construct(FonnteService $fonnteService)
+    {
+        $this->fonnteService = $fonnteService;
+    }
+
     public function index()
     {
         $user = auth()->user();
@@ -105,6 +116,19 @@ class MaintenanceController extends Controller
                 'kondisi_barang_id' => KondisiBarang::where('kondisi_barang', 'Maintenance')->first()->id
             ]);
 
+            // Send message to all users with role iprs and server
+            $roles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+            $users = User::whereIn('role_id', $roles)->get();
+            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+            $message = "Maintenance barang diperlukan" . "\n" .
+                "Barang: " . $barang->nama_barang . "\n" .
+                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+                "Alasan Rusak: " . $request->alasan_rusak;
+
+            foreach ($users as $user) {
+                $this->fonnteService->sendMessage($user->phone, $message);
+            }
+
             return redirect()->route('maintenance.index')->with('success', 'Data maintenance berhasil ditambahkan');
         } catch (\Exception $e) {
             Log::error('Error in MaintenanceController@store: ', ['error' => $e->getMessage()]);
@@ -119,7 +143,7 @@ class MaintenanceController extends Controller
                 ->orWhere('kondisi_barang', 'like', 'maintenance lanjutan')
                 ->firstOrFail();
 
-            $vendors = Vendor::all();
+            $vendors = Vendor::query()->where('nama_vendor', '!=', 'Default Kategori')->get();
 
             $maintenance = Maintenance::find($maintenanceId);
             return view('dashboard.admin.maintenance.maintenance_lanjut', compact('maintenance', 'kondisiBarang', 'vendors'));
@@ -147,6 +171,24 @@ class MaintenanceController extends Controller
             $barang->update([
                 'kondisi_barang_id' => KondisiBarang::where('kondisi_barang', 'Maintenance Lanjutan')->first()->id
             ]);
+
+            // Send message to all users except iprs and admin
+            $maintenance = Maintenance::find($id);
+            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+                ->whereNotIn('role_id', $excludedRoles)
+                ->get();
+            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+            $message = "Barang sedang dalam Maintenance Lanjutan" . "\n" .
+                "Barang: " . $barang->nama_barang . "\n" .
+                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+                "Catatan: " . $request->catatan . "\n" .
+                "Biaya Perbaikan / Vendor: " . "Rp" . number_format($request->harga) . "\n";
+
+            foreach ($users as $user) {
+                $this->fonnteService->sendMessage($user->phone, $message);
+            }
 
             return redirect()->route('maintenance.lanjutan.index')->with('success', 'Data maintenance lanjutan berhasil diupdate');
         } catch (\Exception $e) {
@@ -191,6 +233,23 @@ class MaintenanceController extends Controller
                 'barang_id' => $request->barang_id,
                 'disetujui' => auth()->user()->name,
             ]);
+
+            // Send message to all users except iprs and admin
+            $maintenance = Maintenance::find($id);
+            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+                ->whereNotIn('role_id', $excludedRoles)
+                ->get();
+            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+            $message = "Barang anda dinyatakan telah rusak" . "\n" .
+                "Barang: " . $barang->nama_barang . "\n" .
+                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+                "Catatan: " . $request->catatan . "\n";
+
+            foreach ($users as $user) {
+                $this->fonnteService->sendMessage($user->phone, $message);
+            }
 
             return redirect()->route('maintenance.rusak.index')->with('error', 'Barang gagal diperbaiki');
         } catch (\Exception $e) {
@@ -252,6 +311,24 @@ class MaintenanceController extends Controller
                 'diperbaiki' => $request->diperbaiki,
                 'disetujui' => auth()->user()->name,
             ]);
+
+            // Send message to all users except iprs and admin
+            $maintenance = Maintenance::find($id);
+            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+                ->whereNotIn('role_id', $excludedRoles)
+                ->get();
+            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+            $message = "Barang berhasil diperbaiki" . "\n" .
+                "Barang: " . $barang->nama_barang . "\n" .
+                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+                "Catatan: " . $request->catatan . "\n" .
+                "Biaya Perbaikan / Vendor:" . "Rp" . number_format($request->harga) . "\n";
+
+            foreach ($users as $user) {
+                $this->fonnteService->sendMessage($user->phone, $message);
+            }
 
             return redirect()->route('maintenance.diperbaiki.index')->with('success', 'Barang berhasil diperbaiki');
         } catch (\Exception $e) {

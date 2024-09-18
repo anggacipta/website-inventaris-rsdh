@@ -45,6 +45,14 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="phone" class="form-label">No Handphone(pastikan sudah terdaftar pada WA):</label>
+                                    <input type="number" name="phone" class="form-control" id="phone" value="{{ old('phone') }}">
+                                    @if ($errors->has('phone'))
+                                        <div class="error">{{ $errors->first('phone') }}</div>
+                                    @endif
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="password" class="form-label">Password(minimal 8 karakter):</label>
                                     <input type="password" name="password" class="form-control" id="password" required>
                                     @if ($errors->has('password'))

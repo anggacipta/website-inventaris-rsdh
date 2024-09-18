@@ -20,6 +20,7 @@ class User extends Authenticatable
         'username',
         'password',
         'role_id',
+        'phone',
         'unit_kerja_id',
     ];
 

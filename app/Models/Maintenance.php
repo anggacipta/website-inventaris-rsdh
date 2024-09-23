@@ -17,7 +17,12 @@ class Maintenance extends Model
         'disetujui',
         'kondisi_barang_id',
         'barang_id',
-        'vendor_id'
+        'vendor_id',
+        'persetujuan_direktur',
+        'persetujuan_staff_ahli',
+        'catatan_staff',
+        'catatan_direktur',
+        'tanggal_maintenance_lanjutan',
     ];
 
     public function barang()

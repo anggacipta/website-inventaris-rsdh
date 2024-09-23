@@ -12,13 +12,13 @@ class LogBarangController extends Controller
     public function index()
     {
         $logs = LogBarang::all();
-        return view('dashboard.admin.log_barang.index', compact('logs'));
+        return view('dashboard.admin.logs.log_barang.index', compact('logs'));
     }
 
     public function create($id)
     {
         $barang = Barang::find($id);
-        return view('dashboard.admin.log_barang.create', compact('barang'));
+        return view('dashboard.admin.logs.log_barang.create', compact('barang'));
     }
 
     public function store(Request $request, $id)

@@ -117,17 +117,17 @@ class MaintenanceController extends Controller
             ]);
 
             // Send message to all users with role iprs and server
-            $roles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
-            $users = User::whereIn('role_id', $roles)->get();
-            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
-            $message = "Maintenance barang diperlukan" . "\n" .
-                "Barang: " . $barang->nama_barang . "\n" .
-                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
-                "Alasan Rusak: " . $request->alasan_rusak;
-
-            foreach ($users as $user) {
-                $this->fonnteService->sendMessage($user->phone, $message);
-            }
+//            $roles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+//            $users = User::whereIn('role_id', $roles)->get();
+//            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+//            $message = "Maintenance barang diperlukan" . "\n" .
+//                "Barang: " . $barang->nama_barang . "\n" .
+//                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+//                "Alasan Rusak: " . $request->alasan_rusak;
+//
+//            foreach ($users as $user) {
+//                $this->fonnteService->sendMessage($user->phone, $message);
+//            }
 
             return redirect()->route('maintenance.index')->with('success', 'Data maintenance berhasil ditambahkan');
         } catch (\Exception $e) {
@@ -165,6 +165,7 @@ class MaintenanceController extends Controller
             ]);
 
             $maintenanceData = $request->all();
+            $maintenanceData['tanggal_maintenance_lanjutan'] = now()->format('Y-m-d H:i:s');
             Maintenance::find($id)->update($maintenanceData);
 
             $barang = Barang::find($request->barang_id);
@@ -173,22 +174,22 @@ class MaintenanceController extends Controller
             ]);
 
             // Send message to all users except iprs and admin
-            $maintenance = Maintenance::find($id);
-            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
-            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
-                ->whereNotIn('role_id', $excludedRoles)
-                ->get();
-            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
-            $message = "Barang sedang dalam Maintenance Lanjutan" . "\n" .
-                "Barang: " . $barang->nama_barang . "\n" .
-                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
-                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
-                "Catatan: " . $request->catatan . "\n" .
-                "Biaya Perbaikan / Vendor: " . "Rp" . number_format($request->harga) . "\n";
-
-            foreach ($users as $user) {
-                $this->fonnteService->sendMessage($user->phone, $message);
-            }
+//            $maintenance = Maintenance::find($id);
+//            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+//            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+//                ->whereNotIn('role_id', $excludedRoles)
+//                ->get();
+//            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+//            $message = "Barang sedang dalam Maintenance Lanjutan" . "\n" .
+//                "Barang: " . $barang->nama_barang . "\n" .
+//                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+//                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+//                "Catatan: " . $request->catatan . "\n" .
+//                "Biaya Perbaikan / Vendor: " . "Rp" . number_format($request->harga) . "\n";
+//
+//            foreach ($users as $user) {
+//                $this->fonnteService->sendMessage($user->phone, $message);
+//            }
 
             return redirect()->route('maintenance.lanjutan.index')->with('success', 'Data maintenance lanjutan berhasil diupdate');
         } catch (\Exception $e) {
@@ -236,20 +237,20 @@ class MaintenanceController extends Controller
 
             // Send message to all users except iprs and admin
             $maintenance = Maintenance::find($id);
-            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
-            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
-                ->whereNotIn('role_id', $excludedRoles)
-                ->get();
-            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
-            $message = "Barang anda dinyatakan telah rusak" . "\n" .
-                "Barang: " . $barang->nama_barang . "\n" .
-                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
-                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
-                "Catatan: " . $request->catatan . "\n";
-
-            foreach ($users as $user) {
-                $this->fonnteService->sendMessage($user->phone, $message);
-            }
+//            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+//            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+//                ->whereNotIn('role_id', $excludedRoles)
+//                ->get();
+//            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+//            $message = "Barang anda dinyatakan telah rusak" . "\n" .
+//                "Barang: " . $barang->nama_barang . "\n" .
+//                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+//                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+//                "Catatan: " . $request->catatan . "\n";
+//
+//            foreach ($users as $user) {
+//                $this->fonnteService->sendMessage($user->phone, $message);
+//            }
 
             return redirect()->route('maintenance.rusak.index')->with('error', 'Barang gagal diperbaiki');
         } catch (\Exception $e) {
@@ -313,22 +314,22 @@ class MaintenanceController extends Controller
             ]);
 
             // Send message to all users except iprs and admin
-            $maintenance = Maintenance::find($id);
-            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
-            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
-                ->whereNotIn('role_id', $excludedRoles)
-                ->get();
-            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
-            $message = "Barang berhasil diperbaiki" . "\n" .
-                "Barang: " . $barang->nama_barang . "\n" .
-                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
-                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
-                "Catatan: " . $request->catatan . "\n" .
-                "Biaya Perbaikan / Vendor:" . "Rp" . number_format($request->harga) . "\n";
-
-            foreach ($users as $user) {
-                $this->fonnteService->sendMessage($user->phone, $message);
-            }
+//            $maintenance = Maintenance::find($id);
+//            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+//            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+//                ->whereNotIn('role_id', $excludedRoles)
+//                ->get();
+//            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+//            $message = "Barang berhasil diperbaiki" . "\n" .
+//                "Barang: " . $barang->nama_barang . "\n" .
+//                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+//                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+//                "Catatan: " . $request->catatan . "\n" .
+//                "Biaya Perbaikan / Vendor:" . "Rp" . number_format($request->harga) . "\n";
+//
+//            foreach ($users as $user) {
+//                $this->fonnteService->sendMessage($user->phone, $message);
+//            }
 
             return redirect()->route('maintenance.diperbaiki.index')->with('success', 'Barang berhasil diperbaiki');
         } catch (\Exception $e) {

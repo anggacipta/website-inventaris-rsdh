@@ -12,6 +12,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/barang/forceDelete/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroyPermanent'])->name('barang.forceDelete');
     Route::resource('barang', \App\Http\Controllers\Admin\BarangController::class);
 
+    // Route Persetujuan Maintenance Lanjutan
+    Route::get('/setuju/staff/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'createPersetujuanStaff'])->name('setuju.staff');
+    Route::get('/tidak-setuju/staff/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'createPertidaksetujuanStaff'])->name('tidak.setuju.staff');
+    Route::get('/setuju/direktur/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'createPersetujuanDirektur'])->name('setuju.direktur');
+    Route::get('/tidak-setuju/direktur/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'createPertidaksetujuanDirektur'])->name('tidak.setuju.direktur');
+    Route::post('/setuju/staff/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'storePersetujuanStaff'])->name('store.setuju.staff');
+    Route::post('/setuju/direktur/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'storePersetujuanDirektur'])->name('store.setuju.direktur');
+    Route::post('/tidak-setuju/staff/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'storePertidaksetujuanStaff'])->name('store.tidak.setuju.staff');
+    Route::post('/tidak-setuju/direktur/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'storePertidaksetujuanDirektur'])->name('store.tidak.setuju.direktur');
+
     // Route Log Barang
     Route::get('/log-barang', [\App\Http\Controllers\Admin\LogBarangController::class, 'index'])->name('log.barang');
     Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\LogBarangController::class, 'create'])->name('create.log.barang');
@@ -50,11 +60,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('maintenance-diperbaiki/{maintenanceId}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'createBerhasilDiperbaiki'])->name('maintenance.diperbaiki');
     Route::get('maintenance-diperbaiki-lanjutan/{maintenanceId}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'createBerhasilDiperbaikiLanjutan'])->name('maintenance.diperbaiki.lanjutan');
     Route::put('maintenance-diperbaiki/{id}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateMaintenanceDiperbaiki'])->name('maintenance.diperbaiki.update');
+
     // Get Kode Barang
     Route::get('barang/count/{unitKerjaId}', [\App\Http\Controllers\Admin\BarangController::class, 'countByUnitKerja']);
+
     // Print for Barang
     Route::get('/print-sticker-all', [\App\Http\Controllers\Admin\BarangController::class, 'printStickerAll'])->name('print.sticker.all');
     Route::get('/print-sticker/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'printSticker'])->name('print.sticker');
+
+    // Route Log Maintenance
+    Route::get('/log-maintenance', [\App\Http\Controllers\Admin\LogMaintenanceController::class, 'index'])->name('log.maintenance');
+
+    // Route Log Persetujuan Maintenance
+    Route::get('/log-persetujuan-maintenance', [\App\Http\Controllers\Admin\LogPersetujuanMaintenanceController::class, 'index'])->name('log.persetujuan.maintenance');
+    Route::get('/log-persetujuan-maintenance/{id}', [\App\Http\Controllers\Admin\LogPersetujuanMaintenanceController::class, 'show'])->name('log.persetujuan.maintenance.show');
 
     // Route Roles
     Route::resource('roles', \App\Http\Controllers\RolePermissionController::class);

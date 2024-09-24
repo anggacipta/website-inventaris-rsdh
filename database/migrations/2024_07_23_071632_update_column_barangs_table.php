@@ -28,9 +28,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('barangs', function (Blueprint $table) {
-            $table->text('keterangan')->nullable(false)->change();
-            $table->string('distributor')->nullable(false)->change();
-            $table->string('no_akl_akd')->nullable(false)->change();
+            $table->text('keterangan')->change();
+            $table->string('distributor')->change();
+            $table->string('no_akl_akd')->change();
         });
     }
 };

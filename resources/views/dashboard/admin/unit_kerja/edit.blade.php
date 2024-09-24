@@ -16,6 +16,10 @@
                                 <label for="exampleInputEmail1" class="form-label">Unit Kerja</label>
                                 <input type="text" name="unit_kerja" class="form-control" id="nama" value="{{$unit->unit_kerja}}" aria-describedby="emailHelp">
                             </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Kode Barang</label>
+                                <input type="text" name="kode_barang" class="form-control" id="nama" value="{{ $unit->kode_barang }}" aria-describedby="emailHelp">
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>

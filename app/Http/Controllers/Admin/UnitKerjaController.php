@@ -21,9 +21,15 @@ class UnitKerjaController extends Controller
     {
         $request->validate([
             'unit_kerja' => 'required',
+            'kode_barang' => 'required|regex:/^[a-zA-Z]+$/',
         ]);
 
-        UnitKerja::create($request->all());
+        // Format data ke uppercase
+        $data = $request->all();
+        $data['kode_barang'] = strtoupper($data['kode_barang']); // Convert to uppercase
+
+        // Create new unit
+        UnitKerja::create($data);
 
         return redirect()->route('unit-kerja.index')
             ->with('success', 'Unit Kerja created successfully.');
@@ -39,10 +45,17 @@ class UnitKerjaController extends Controller
     {
         $request->validate([
             'unit_kerja' => 'required',
+            'kode_barang' => 'required|regex:/^[a-zA-Z]+$/',
         ]);
 
         $unit = UnitKerja::find($id);
-        $unit->update($request->all());
+
+        // Format data ke uppercase
+        $data = $request->all();
+        $data['kode_barang'] = strtoupper($data['kode_barang']); // Convert to uppercase
+
+        // Update data
+        $unit->update($data);
 
         return redirect()->route('unit-kerja.index')
             ->with('success', 'Unit Kerja updated successfully');

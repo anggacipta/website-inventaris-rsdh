@@ -21,9 +21,15 @@ class JenisBarangController extends Controller
     {
         $request->validate([
             'jenis_barang' => 'required',
+            'kode_barang' => 'required|regex:/^[a-zA-Z]+$/',
         ]);
 
-        JenisBarang::create($request->all());
+        // Format data ke uppercase
+        $data = $request->all();
+        $data['kode_barang'] = strtoupper($data['kode_barang']);
+
+        // Buat jenis barang baru
+        JenisBarang::create($data);
 
         return redirect()->route('jenis-barang.index')
             ->with('success', 'Jenis Barang created successfully.');
@@ -39,10 +45,17 @@ class JenisBarangController extends Controller
     {
         $request->validate([
             'jenis_barang' => 'required',
+            'kode_barang' => 'required|regex:/^[a-zA-Z]+$/',
         ]);
 
         $jenis_barang = JenisBarang::find($id);
-        $jenis_barang->update($request->all());
+
+        // Format data ke uppercase
+        $data = $request->all();
+        $data['kode_barang'] = strtoupper($data['kode_barang']);
+
+        // Update data
+        $jenis_barang->update($data);
 
         return redirect()->route('jenis-barang.index')
             ->with('success', 'Jenis Barang updated successfully');

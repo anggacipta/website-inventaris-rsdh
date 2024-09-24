@@ -202,6 +202,25 @@ class BarangController extends Controller
         return response()->json(['count' => $count]);
     }
 
+    public function getKodeBarang($unitKerjaId, $jenisBarangId)
+    {
+        $unitKerja = UnitKerja::find($unitKerjaId);
+        $jenisBarang = JenisBarang::find($jenisBarangId);
+
+        if ($unitKerja && $jenisBarang) {
+            $totalBarang = Barang::where('unit_kerja_id', $unitKerjaId)
+                    ->where('jenis_barang_id', $jenisBarangId)
+                    ->count();
+            $totalBarangByUnitKerja = Barang::where('unit_kerja_id', $unitKerjaId)->count() + 1;
+            $totalBarangByJenisBarang = Barang::where('jenis_barang_id', $jenisBarangId)->count() + 1;
+
+            $kodeBarang = sprintf('%s-%s-%03d%03d-%s', $unitKerja->kode_barang, $jenisBarang->kode_barang, $totalBarangByUnitKerja, $totalBarangByJenisBarang, date('Y'));
+            return response()->json(['kode_barang' => $kodeBarang]);
+        } else {
+            return response()->json(['error' => 'Unit Kerja or Jenis Barang not found'], 404);
+        }
+    }
+
     public function printSticker($id)
     {
         $barang = Barang::findOrFail($id);

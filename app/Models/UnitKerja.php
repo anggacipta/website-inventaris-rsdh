@@ -10,7 +10,7 @@ class UnitKerja extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['unit_kerja'];
+    protected $fillable = ['unit_kerja', 'kode_barang'];
 
     public static function ensureDefaultCategoryExists()
     {

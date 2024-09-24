@@ -27,7 +27,11 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Unit Kerja</label>
-                                        <input type="text" name="unit_kerja" class="form-control" id="nama" aria-describedby="emailHelp">
+                                        <input type="text" name="unit_kerja" class="form-control" id="nama" aria-describedby="emailHelp" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Kode Barang(jangan gunakan angka)</label>
+                                        <input type="text" name="kode_barang" class="form-control" id="nama" aria-describedby="emailHelp" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -49,6 +53,7 @@
                 <tr>
                     <th>No</th>
                     <th>Unit Kerja</th>
+                    <th>Kode Barang</th>
                     <th>Aksi</th>
                 </tr>
                 </thead>
@@ -57,6 +62,7 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{ $unit->unit_kerja }}</td>
+                        <td>{{ $unit->kode_barang }}</td>
                         <td>
                             <a href="{{ route('unit-kerja.edit', $unit->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('unit-kerja.destroy', $unit->id) }}" method="post" class="d-inline delete-form">

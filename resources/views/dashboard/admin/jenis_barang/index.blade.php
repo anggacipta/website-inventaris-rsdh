@@ -29,6 +29,10 @@
                                         <label for="exampleInputEmail1" class="form-label">Jenis Barang</label>
                                         <input type="text" name="jenis_barang" class="form-control" id="nama" aria-describedby="emailHelp">
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Kode Barang(jangan gunakan angka)</label>
+                                        <input type="text" name="kode_barang" class="form-control" id="nama" aria-describedby="emailHelp" required>
+                                    </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                             </div>
@@ -49,6 +53,7 @@
                 <tr>
                     <th>No</th>
                     <th>Jenis Barang</th>
+                    <th>Kode Barang</th>
                     <th>Aksi</th>
                 </tr>
                 </thead>
@@ -57,6 +62,7 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{ $jenis->jenis_barang }}</td>
+                        <td>{{ $jenis->kode_barang }}</td>
                         <td>
                             <a href="{{ route('jenis-barang.edit', $jenis->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('jenis-barang.destroy', $jenis->id) }}" method="post" class="d-inline delete-form">

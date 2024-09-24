@@ -203,31 +203,60 @@
         });
     </script>
 
+{{--    <script type="text/javascript">--}}
+{{--        $(document).ready(function() {--}}
+{{--            $("select[name='unit_kerja_id']").on('change', function() {--}}
+{{--                var unitKerjaId = $(this).val();--}}
+{{--                if (unitKerjaId) {--}}
+{{--                    $.ajax({--}}
+{{--                        url: "{{ url('/barang/count/') }}/" + unitKerjaId,--}}
+{{--                        type: "GET",--}}
+{{--                        dataType: "json",--}}
+{{--                        success: function(data) {--}}
+{{--                            if (data && data.count !== undefined) {--}}
+{{--                                var kodeBarang = 'BRG' + String(data.count).padStart(3, '0');--}}
+{{--                                $("input[name='kode_barang']").val(kodeBarang);--}}
+{{--                            } else {--}}
+{{--                                alert('Error: Invalid data received');--}}
+{{--                            }--}}
+{{--                        },--}}
+{{--                        error: function(jqXHR, textStatus, errorThrown) {--}}
+{{--                            alert('Error: ' + textStatus + ' - ' + errorThrown);--}}
+{{--                        }--}}
+{{--                    });--}}
+{{--                } else {--}}
+{{--                    alert('Please select a valid Unit Kerja ID');--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+
     <script type="text/javascript">
         $(document).ready(function() {
-            $("select[name='unit_kerja_id']").on('change', function() {
-                var unitKerjaId = $(this).val();
-                if (unitKerjaId) {
+            function fetchKodeBarang() {
+                var unitKerjaId = $("select[name='unit_kerja_id']").val();
+                var jenisBarangId = $("select[name='jenis_barang_id']").val();
+                if (unitKerjaId && jenisBarangId) {
                     $.ajax({
-                        url: "{{ url('/barang/count/') }}/" + unitKerjaId,
+                        url: "{{ url('/barang/kode-barang/') }}/" + unitKerjaId + "/" + jenisBarangId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            if (data && data.count !== undefined) {
-                                var kodeBarang = 'BRG' + String(data.count).padStart(3, '0');
-                                $("input[name='kode_barang']").val(kodeBarang);
-                            } else {
-                                alert('Error: Invalid data received');
+                            if (data && data.kode_barang !== undefined) {
+                                $("input[name='kode_barang']").val(data.kode_barang);
                             }
+                            // else {
+                            //     alert('Error: ' + data.error);
+                            // }
                         },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert('Error: ' + textStatus + ' - ' + errorThrown);
-                        }
+                        // error: function(jqXHR, textStatus, errorThrown) {
+                        //     alert('Error: ' + textStatus + ' - ' + errorThrown);
+                        // }
                     });
-                } else {
-                    alert('Please select a valid Unit Kerja ID');
                 }
-            });
+            }
+
+            $("select[name='unit_kerja_id'], select[name='jenis_barang_id']").on('change', fetchKodeBarang);
         });
     </script>
 @endsection

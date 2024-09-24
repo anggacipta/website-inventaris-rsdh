@@ -20,18 +20,22 @@ class JenisBarang extends Seeder
 
         \App\Models\JenisBarang::create([
             'jenis_barang' => 'Elektronik',
+            'kode_barang' => 'E'
         ]);
 
         \App\Models\JenisBarang::create([
             'jenis_barang' => 'Komputer',
+            'kode_barang' => 'K'
         ]);
 
         \App\Models\JenisBarang::create([
             'jenis_barang' => 'Alat Rumah Tangga',
+            'kode_barang' => 'ART'
         ]);
 
         \App\Models\JenisBarang::create([
             'jenis_barang' => 'Alat Kesehatan',
+            'kode_barang' => 'AK'
         ]);
     }
 }

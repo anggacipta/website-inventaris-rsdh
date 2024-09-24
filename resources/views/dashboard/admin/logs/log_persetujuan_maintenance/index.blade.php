@@ -9,7 +9,7 @@
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>ID Barang</th>
+                    <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Unit Kerja</th>
                     <th>Persetujuan Staff Ahli</th>

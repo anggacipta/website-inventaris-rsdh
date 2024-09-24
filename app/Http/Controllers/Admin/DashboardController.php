@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $total = $maintenances->count();
 
         $serverCount = $maintenances->where('diperbaiki', 'server')->count();
-        $iprsCount = $maintenances->where('diperbaiki', 'iprs')->count();
+        $iprsCount = $maintenances->where('diperbaiki', 'ipsrs')->count();
         $vendorCount = $maintenances->where('diperbaiki', 'vendor')->count();
 
         $serverPercentage = $total ? ($serverCount / $total) * 100 : 0;

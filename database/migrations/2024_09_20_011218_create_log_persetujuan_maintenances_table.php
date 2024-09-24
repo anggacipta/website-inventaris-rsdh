@@ -22,8 +22,8 @@ return new class extends Migration
             $table->boolean('persetujuan_direktur');
             $table->text('catatan_staff')->nullable();
             $table->text('catatan_direktur')->nullable();
-            $table->date('tanggal_maintenance');
-            $table->date('tanggal_maintenance_lanjutan');
+            $table->timestamp('tanggal_maintenance');
+            $table->timestamp('tanggal_maintenance_lanjutan');
             $table->timestamps();
         });
     }

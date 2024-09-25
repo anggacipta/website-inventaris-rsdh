@@ -97,10 +97,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="harga" class="form-label">Harga Barang</label>
-                                        <input type="number" name="harga" class="form-control" id="harga"
-                                               aria-describedby="emailHelp">
+                                    <div class="form-group">
+                                        <label for="formatted_harga" class="form-label">Harga</label>
+                                        <input type="text" id="formatted_harga" class="form-control" placeholder="Masukkan harga">
+                                        <input type="hidden" name="harga" id="harga">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -113,6 +113,16 @@
                                                 <option value="{{ $sumberPengadaan->id }}">{{ $sumberPengadaan->sumber_pengadaan }}
                                                 </option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="tahun_pengadaan" class="form-label">Tahun Pengadaan</label>
+                                        <select name="tahun_pengadaan_kode" class="form-control" id="tahun_pengadaan">
+                                            @for ($year = date('Y'); $year >= 2000; $year--)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                 </div>
@@ -160,6 +170,16 @@
 
     <script>
         $(document).ready(function() {
+            function formatNumberWithCommas(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            $('#formatted_harga').on('input', function() {
+                var rawValue = $(this).val().replace(/[^0-9]/g, '');
+                $('#harga').val(rawValue);
+                $(this).val(formatNumberWithCommas(rawValue));
+            });
+
             $("#barangForm").submit(function(e) {
                 var namaBarang = $("input[name='nama_barang']").val();
                 var unitKerjaId = $("select[name='unit_kerja_id']").val();
@@ -172,73 +192,46 @@
                 var photo = $("input[name='photo']").val();
 
                 if (!namaBarang) {
-                    alert('Nama Barang harus diisi!');
+                    alert('Nama barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!unitKerjaId || unitKerjaId === 'Pilih unit kerja') {
-                    alert('Unit Kerja harus diisi!');
+                    alert('Unit kerja tidak boleh kosong');
                     e.preventDefault();
                 } else if (!jenisBarangId || jenisBarangId === 'Pilih Jenis Barang') {
-                    alert('Jenis Barang harus diisi!');
+                    alert('Jenis barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!merkBarangId || merkBarangId === 'Pilih Merk Barang') {
-                    alert('Merk Barang harus diisi!');
+                    alert('Merk barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!tahunPengadaan) {
-                    alert('Tahun Pengadaan harus diisi!');
+                    alert('Tahun pengadaan tidak boleh kosong');
                     e.preventDefault();
                 } else if (!kondisiBarangId || kondisiBarangId === 'Pilih Kondisi Barang') {
-                    alert('Kondisi Barang harus diisi!');
+                    alert('Kondisi barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!harga) {
-                    alert('Harga harus diisi!');
+                    alert('Harga tidak boleh kosong');
                     e.preventDefault();
                 } else if (!sumberPengadaanId || sumberPengadaanId === 'Pilih Sumber Pengadaan') {
-                    alert('Sumber Pengadaan harus diisi!');
+                    alert('Sumber pengadaan tidak boleh kosong');
                     e.preventDefault();
                 } else if (!photo) {
-                    alert('Foto Barang harus diisi!');
+                    alert('Photo tidak boleh kosong');
                     e.preventDefault();
                 }
             });
         });
     </script>
 
-{{--    <script type="text/javascript">--}}
-{{--        $(document).ready(function() {--}}
-{{--            $("select[name='unit_kerja_id']").on('change', function() {--}}
-{{--                var unitKerjaId = $(this).val();--}}
-{{--                if (unitKerjaId) {--}}
-{{--                    $.ajax({--}}
-{{--                        url: "{{ url('/barang/count/') }}/" + unitKerjaId,--}}
-{{--                        type: "GET",--}}
-{{--                        dataType: "json",--}}
-{{--                        success: function(data) {--}}
-{{--                            if (data && data.count !== undefined) {--}}
-{{--                                var kodeBarang = 'BRG' + String(data.count).padStart(3, '0');--}}
-{{--                                $("input[name='kode_barang']").val(kodeBarang);--}}
-{{--                            } else {--}}
-{{--                                alert('Error: Invalid data received');--}}
-{{--                            }--}}
-{{--                        },--}}
-{{--                        error: function(jqXHR, textStatus, errorThrown) {--}}
-{{--                            alert('Error: ' + textStatus + ' - ' + errorThrown);--}}
-{{--                        }--}}
-{{--                    });--}}
-{{--                } else {--}}
-{{--                    alert('Please select a valid Unit Kerja ID');--}}
-{{--                }--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
-
     <script type="text/javascript">
         $(document).ready(function() {
             function fetchKodeBarang() {
                 var unitKerjaId = $("select[name='unit_kerja_id']").val();
                 var jenisBarangId = $("select[name='jenis_barang_id']").val();
+                var tahunPengadaanKode = $("select[name='tahun_pengadaan_kode']").val();
                 if (unitKerjaId && jenisBarangId) {
                     $.ajax({
-                        url: "{{ url('/barang/kode-barang/') }}/" + unitKerjaId + "/" + jenisBarangId,
+                        url: "{{ url('/barang/kode-barang/') }}/" + unitKerjaId + "/" + jenisBarangId + "/" + tahunPengadaanKode,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -256,7 +249,7 @@
                 }
             }
 
-            $("select[name='unit_kerja_id'], select[name='jenis_barang_id']").on('change', fetchKodeBarang);
+            $("select[name='unit_kerja_id'], select[name='jenis_barang_id'], select[name='tahun_pengadaan_kode']").on('change', fetchKodeBarang);
         });
     </script>
 @endsection

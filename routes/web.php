@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Get Kode Barang
     Route::get('barang/count/{unitKerjaId}', [\App\Http\Controllers\Admin\BarangController::class, 'countByUnitKerja']);
-    Route::get('barang/kode-barang/{unitKerjaId}/{jenisBarangId}', [\App\Http\Controllers\Admin\BarangController::class, 'getKodeBarang']);
+    Route::get('barang/kode-barang/{unitKerjaId}/{jenisBarangId}/{tahunPengadaan}/{id?}', [\App\Http\Controllers\Admin\BarangController::class, 'getKodeBarang']);
 
     // Print for Barang
     Route::get('/print-sticker-all', [\App\Http\Controllers\Admin\BarangController::class, 'printStickerAll'])->name('print.sticker.all');

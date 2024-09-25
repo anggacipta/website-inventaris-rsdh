@@ -111,10 +111,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="formatted_harga" class="form-label">Harga</label>
+                                        <input type="text" id="formatted_harga" class="form-control" placeholder="Masukkan harga" value="{{ $barang->harga }}">
+                                        <input type="hidden" name="harga" id="harga" value="{{ $barang->harga }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="harga" class="form-label">Harga Barang</label>
-                                        <input type="number" name="harga" class="form-control" id="harga"
-                                               aria-describedby="emailHelp" value="{{ $barang->harga }}">
+                                        <label for="tahun_pengadaan" class="form-label">Tahun Pengadaan(tolong diubah apabila mengubah Jenis Barang dan Unit Kerja, karena value bisa berganti)</label>
+                                        <select name="tahun_pengadaan_kode" class="form-control" id="tahun_pengadaan">
+                                            @for ($year = date('Y'); $year >= 2000; $year--)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -141,41 +151,53 @@
 
     <script>
         $(document).ready(function() {
-            $("form").submit(function(e) {
+            function formatNumberWithCommas(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            $('#formatted_harga').on('input', function() {
+                var rawValue = $(this).val().replace(/[^0-9]/g, '');
+                $('#harga').val(rawValue);
+                $(this).val(formatNumberWithCommas(rawValue));
+            });
+
+            $("#barangForm").submit(function(e) {
                 var namaBarang = $("input[name='nama_barang']").val();
                 var unitKerjaId = $("select[name='unit_kerja_id']").val();
                 var jenisBarangId = $("select[name='jenis_barang_id']").val();
                 var merkBarangId = $("select[name='merk_barang_id']").val();
                 var tahunPengadaan = $("input[name='tahun_pengadaan']").val();
-                // var kondisiBarangId = $("select[name='kondisi_barang_id']").val();
+                var kondisiBarangId = $("select[name='kondisi_barang_id']").val();
                 var harga = $("input[name='harga']").val();
                 var sumberPengadaanId = $("select[name='sumber_pengadaan_id']").val();
+                var photo = $("input[name='photo']").val();
 
                 if (!namaBarang) {
-                    alert('Nama Barang harus diisi!');
+                    alert('Nama barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!unitKerjaId || unitKerjaId === 'Pilih unit kerja') {
-                    alert('Unit Kerja harus diisi!');
+                    alert('Unit kerja tidak boleh kosong');
                     e.preventDefault();
                 } else if (!jenisBarangId || jenisBarangId === 'Pilih Jenis Barang') {
-                    alert('Jenis Barang harus diisi!');
+                    alert('Jenis barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!merkBarangId || merkBarangId === 'Pilih Merk Barang') {
-                    alert('Merk Barang harus diisi!');
+                    alert('Merk barang tidak boleh kosong');
                     e.preventDefault();
                 } else if (!tahunPengadaan) {
-                    alert('Tahun Pengadaan harus diisi!');
+                    alert('Tahun pengadaan tidak boleh kosong');
                     e.preventDefault();
-                }
-                // else if (!kondisiBarangId || kondisiBarangId === 'Pilih Kondisi Barang') {
-                //     alert('Kondisi Barang harus diisi!');
-                //     e.preventDefault();
-                // }
-                else if (!harga) {
-                    alert('Harga harus diisi!');
+                } else if (!kondisiBarangId || kondisiBarangId === 'Pilih Kondisi Barang') {
+                    alert('Kondisi barang tidak boleh kosong');
+                    e.preventDefault();
+                } else if (!harga) {
+                    alert('Harga tidak boleh kosong');
                     e.preventDefault();
                 } else if (!sumberPengadaanId || sumberPengadaanId === 'Pilih Sumber Pengadaan') {
-                    alert('Sumber Pengadaan harus diisi!');
+                    alert('Sumber pengadaan tidak boleh kosong');
+                    e.preventDefault();
+                } else if (!photo) {
+                    alert('Photo tidak boleh kosong');
                     e.preventDefault();
                 }
             });
@@ -183,30 +205,26 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("select[name='unit_kerja_id']").on('change', function() {
-                var unitKerjaId = $(this).val();
-                if (unitKerjaId) {
-                    $.ajax({
-                        url: "{{ url('/barang/count/') }}/" + unitKerjaId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            if (data && data.count !== undefined) {
-                                var kodeBarang = 'BRG' + String(data.count).padStart(3, '0');
-                                $("input[name='kode_barang']").val(kodeBarang);
-                            } else {
-                                alert('Error: Invalid data received');
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert('Error: ' + textStatus + ' - ' + errorThrown);
+        function fetchKodeBarang() {
+            var unitKerjaId = $("select[name='unit_kerja_id']").val();
+            var jenisBarangId = $("select[name='jenis_barang_id']").val();
+            var tahunPengadaanKode = $("select[name='tahun_pengadaan_kode']").val();
+            var barangId = "{{ $barang->id }}"; // Get the current barang id
+
+            if (unitKerjaId && jenisBarangId) {
+                $.ajax({
+                    url: "{{ url('/barang/kode-barang/') }}/" + unitKerjaId + "/" + jenisBarangId + "/" + tahunPengadaanKode + "/" + barangId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data && data.kode_barang !== undefined) {
+                            $("input[name='kode_barang']").val(data.kode_barang);
                         }
-                    });
-                } else {
-                    alert('Please select a valid Unit Kerja ID');
-                }
-            });
-        });
+                    }
+                });
+            }
+        }
+
+        $("select[name='unit_kerja_id'], select[name='jenis_barang_id'], select[name='tahun_pengadaan_kode']").on('change', fetchKodeBarang);
     </script>
 @endsection

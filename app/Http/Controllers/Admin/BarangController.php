@@ -80,7 +80,7 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $barangData = $request->validate([
             'nama_barang' => 'required',
             'kode_barang' => 'required',
             'unit_kerja_id' => 'required',
@@ -92,8 +92,6 @@ class BarangController extends Controller
             'harga' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
-
-        $barangData = $request->all();
 
         // Convert 'tahun_pengadaan' to 'YYYY-MM-DD' format
         $barangData['tahun_pengadaan'] = Carbon::createFromFormat('m/d/Y', $request->tahun_pengadaan)->format('Y-m-d');
@@ -112,18 +110,18 @@ class BarangController extends Controller
     public function edit($id)
     {
         $barang = Barang::find($id);
-        $unit_kerjas = UnitKerja::all();
-        $merk_barangs = MerkBarang::all();
-        $jenis_barangs = JenisBarang::all();
-        $kondisi_barangs = KondisiBarang::all();
-        $sumber_pengadaans = SumberPengadaan::all();
+        $unit_kerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
+        $merk_barangs = MerkBarang::query()->where('merk_barang', '!=', 'Default Kategori')->get();
+        $jenis_barangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
+        $kondisi_barangs = KondisiBarang::query()->where('kondisi_barang', '!=', 'Default Kategori')->get();
+        $sumber_pengadaans = SumberPengadaan::query()->where('sumber_pengadaan', '!=', 'Default Kategori')->get();
         return view('dashboard.admin.barang.edit', compact('barang', 'unit_kerjas', 'merk_barangs',
             'jenis_barangs', 'kondisi_barangs', 'sumber_pengadaans'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $barangData = $request->validate([
             'nama_barang' => 'required',
             'kode_barang' => 'required',
             'unit_kerja_id' => 'required',
@@ -137,7 +135,6 @@ class BarangController extends Controller
         ]);
 
         $barang = Barang::find($id);
-        $barangData = $request->all();
 
         // Convert 'tahun_pengadaan' to 'YYYY-MM-DD' format
         $barangData['tahun_pengadaan'] = Carbon::createFromFormat('m/d/Y', $request->tahun_pengadaan)->format('Y-m-d');
@@ -202,25 +199,38 @@ class BarangController extends Controller
         return response()->json(['count' => $count]);
     }
 
-    public function getKodeBarang($unitKerjaId, $jenisBarangId)
+    public function getKodeBarang($unitKerjaId, $jenisBarangId, $tahunPengadaan, $id = null)
     {
         $unitKerja = UnitKerja::find($unitKerjaId);
         $jenisBarang = JenisBarang::find($jenisBarangId);
 
         if ($unitKerja && $jenisBarang) {
-            $totalBarang = Barang::where('unit_kerja_id', $unitKerjaId)
-                    ->where('jenis_barang_id', $jenisBarangId)
-                    ->count();
-            $totalBarangByUnitKerja = Barang::where('unit_kerja_id', $unitKerjaId)->count() + 1;
-            $totalBarangByJenisBarang = Barang::where('jenis_barang_id', $jenisBarangId)->count() + 1;
+            if ($id) {
+                $barang = Barang::find($id);
+                if ($barang) {
+                    $unitKerjaChanged = $barang->unit_kerja_id != $unitKerjaId;
+                    $jenisBarangChanged = $barang->jenis_barang_id != $jenisBarangId;
+                    $tahunPengadaanChanged = $barang->tahun_pengadaan != $tahunPengadaan;
 
-            $kodeBarang = sprintf('%s-%s-%03d%03d-%s', $unitKerja->kode_barang, $jenisBarang->kode_barang, $totalBarangByUnitKerja, $totalBarangByJenisBarang, date('Y'));
+                    if (!$unitKerjaChanged && !$jenisBarangChanged && !$tahunPengadaanChanged) {
+                        return response()->json(['kode_barang' => $barang->kode_barang]);
+                    }
+
+                    $totalBarangByUnitKerja = $unitKerjaChanged ? Barang::where('unit_kerja_id', $unitKerjaId)->count() + 1 : Barang::where('unit_kerja_id', $unitKerjaId)->count();
+                    $totalBarangByJenisBarang = $jenisBarangChanged ? Barang::where('jenis_barang_id', $jenisBarangId)->count() + 1 : Barang::where('jenis_barang_id', $jenisBarangId)->count();
+                }
+            } else {
+                $totalBarangByUnitKerja = Barang::where('unit_kerja_id', $unitKerjaId)->count() + 1;
+                $totalBarangByJenisBarang = Barang::where('jenis_barang_id', $jenisBarangId)->count() + 1;
+            }
+
+            $kodeBarang = sprintf('%s-%s-%03d%03d-%s', $unitKerja->kode_barang, $jenisBarang->kode_barang, $totalBarangByUnitKerja, $totalBarangByJenisBarang, $tahunPengadaan);
             return response()->json(['kode_barang' => $kodeBarang]);
         } else {
             return response()->json(['error' => 'Unit Kerja or Jenis Barang not found'], 404);
         }
     }
-
+    
     public function printSticker($id)
     {
         $barang = Barang::findOrFail($id);

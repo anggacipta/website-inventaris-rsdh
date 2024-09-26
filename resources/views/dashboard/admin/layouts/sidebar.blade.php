@@ -178,6 +178,7 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Logs</span>
                 </li>
+                @can('log.maintenance')
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('log.maintenance') }}" aria-expanded="false">
                         <span>
@@ -186,6 +187,8 @@
                         <span class="hide-menu">Log Maintenance</span>
                     </a>
                 </li>
+                @endcan
+                @can('log.persetujuan.maintenance')
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('log.persetujuan.maintenance') }}" aria-expanded="false">
                         <span>
@@ -194,6 +197,8 @@
                         <span class="hide-menu">Log Persetujuan Maintenance</span>
                     </a>
                 </li>
+                @endcan
+                @can('log.barang.dihapus')
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('log.barang') }}" aria-expanded="false">
                 <span>
@@ -202,6 +207,7 @@
                         <span class="hide-menu">Log Barang Dihapus</span>
                     </a>
                 </li>
+                @endcan
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>

@@ -10,7 +10,7 @@ class LogPersetujuanMaintenanceController extends Controller
 {
     public function index()
     {
-        $persetujuans = LogPersetujuanMaintenance::orderBy('updated_at', 'desc')->limit(500)->paginate(10);
+        $persetujuans = LogPersetujuanMaintenance::orderBy('updated_at', 'desc')->limit(100)->paginate(10);
         return view('dashboard.admin.logs.log_persetujuan_maintenance.index', compact('persetujuans'));
     }
 

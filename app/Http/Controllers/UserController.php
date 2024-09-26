@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::query()->limit(50)->get();
         return view('dashboard.admin.users.index', compact('users'));
     }
 
@@ -80,9 +80,15 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->unit_kerja_id = $request->unit_kerja_id;
         $user->role_id = $request->role_id;
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
+
+        // Reassign the role to the user
+        $role = Role::find($request->role_id);
+        $user->syncRoles($role->name);
+
         $user->save();
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');

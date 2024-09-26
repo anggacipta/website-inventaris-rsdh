@@ -54,13 +54,19 @@
                             </td>
                             <td>
                                 @if($maint->persetujuan_staff_ahli == '')
+                                    @can('staff.ahli.persetujuan')
                                     <a href="{{ route('setuju.staff', $maint->id) }}" class="btn btn-success mb-2">Setujui</a>
                                     <a href="{{ route('tidak.setuju.staff', $maint->id) }}" class="btn btn-danger">Tidak Setuju</a>
+                                    @endcan
                                 @elseif($maint->persetujuan_direktur == '' && $maint->persetujuan_staff_ahli == 1)
+                                    @can('direktur.persetujuan')
                                     <a href="{{ route('setuju.direktur', $maint->id) }}" class="btn btn-success mb-2">Setujui</a>
                                     <a href="{{ route('tidak.setuju.direktur', $maint->id) }}" class="btn btn-danger">Tidak Setuju</a>
+                                    @endcan
                                 @elseif($maint->persetujuan_direktur == 1 && $maint->persetujuan_staff_ahli == 1)
+                                    @can('maintenance.diperbaiki')
                                     <a href="{{ route('maintenance.diperbaiki.lanjutan', $maint->id) }}" class="btn btn-info">Berhasil Diperbaiki</a>
+                                    @endcan
                                 @else
 
                                 @endif

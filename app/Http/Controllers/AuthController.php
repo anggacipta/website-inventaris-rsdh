@@ -21,14 +21,10 @@ class AuthController extends Controller
         if (auth()->attempt($credentials)) {
             // Check user role and redirect accordingly
             $roleName = auth()->user()->role->name;
-            switch ($roleName) {
-                case 'server':
-                    return redirect()->route('dashboard.index');
-                case 'user':
-                 case 'iprs':
-                    return redirect()->route('barang.index');
-                default:
-                    return redirect()->route('login');
+            if ($roleName === 'server') {
+                return redirect()->route('dashboard.index');
+            } else {
+                return redirect()->route('barang.index');
             }
         }
 

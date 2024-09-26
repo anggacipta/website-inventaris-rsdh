@@ -32,7 +32,7 @@ class LogMaintenanceController extends Controller
             });
         }
 
-        $maintenances = $query->orderBy('updated_at', 'desc')->limit(500)->paginate(10);
+        $maintenances = $query->orderBy('updated_at', 'desc')->limit(100)->paginate(10);
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 

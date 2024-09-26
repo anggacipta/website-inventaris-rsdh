@@ -29,6 +29,11 @@ class PermissionSeeder extends Seeder
             'users',
             'roles',
             'permission',
+            'staff.ahli.persetujuan',
+            'direktur.persetujuan',
+            'log.maintenance',
+            'log.persetujuan.maintenance',
+            'log.barang.dihapus'
         ];
 
         foreach ($permissions as $permission) {

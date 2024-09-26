@@ -16,8 +16,7 @@ class DashboardController extends Controller
         $previousMonth = now()->subMonth()->month;
 
         // Retrieve barang data all
-        $barangs = Barang::all();
-        $totalBarang = $barangs->count();
+        $totalBarang = Barang::query()->count();
 
         // Retrieve maintenance data for the current month
         $maintenances = Maintenance::whereMonth('created_at', $currentMonth)->get();

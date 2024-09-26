@@ -11,7 +11,7 @@ class VendorController extends Controller
 {
     public function index()
     {
-        $vendors = Vendor::all();
+        $vendors = Vendor::query()->limit(50)->get();
         return view('dashboard.admin.vendor.index', compact('vendors'));
     }
 

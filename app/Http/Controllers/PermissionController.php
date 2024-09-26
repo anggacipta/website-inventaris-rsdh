@@ -9,7 +9,7 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::query()->limit(100)->get();
         return view('permissions.index', compact('permissions'));
     }
 
@@ -21,7 +21,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         Permission::create(['name' => $request->name]);
-        return redirect()->route('permissions.index');
+        return redirect()->route('permissions.index')->with('success', 'Permission created successfully');
     }
 
     public function edit(Permission $permission)

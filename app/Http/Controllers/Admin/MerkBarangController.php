@@ -12,7 +12,7 @@ class MerkBarangController extends Controller
     public function index()
     {
         MerkBarang::ensureDefaultCategoryExists();
-        $merks = MerkBarang::all();
+        $merks = MerkBarang::query()->limit(50)->get();
         return view('dashboard.admin.merk_barang.index', compact('merks'));
     }
 

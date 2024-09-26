@@ -11,7 +11,7 @@ class LogBarangController extends Controller
 {
     public function index()
     {
-        $logs = LogBarang::query()->limit(100)->get();
+        $logs = LogBarang::query()->orderBy('created_at', 'desc')->limit(100)->get();
         return view('dashboard.admin.logs.log_barang.index', compact('logs'));
     }
 

@@ -35,13 +35,13 @@ class BarangController extends Controller
 //            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
 //               $query->where('kondisi_barang', '!=', 'Rusak');
 //            })->paginate(10);
-            $barangs = $query->withoutTrashed()->limit(200)->paginate(10);
+            $barangs = $query->withoutTrashed()->orderBy('created_at', 'desc')->limit(200)->paginate(10);
         } else {
             $barangs = $query->where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->withoutTrashed()->limit(200)->paginate(10);
+                ->withoutTrashed()->orderBy('created_at', 'desc')->limit(200)->paginate(10);
         }
 
         return view('dashboard.admin.barang.index', compact('barangs'));

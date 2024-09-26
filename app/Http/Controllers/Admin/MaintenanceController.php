@@ -45,6 +45,7 @@ class MaintenanceController extends Controller
                 });
             })
             ->where('kondisi_barang_id', $maintenanceConditionId)
+            ->orderBy('updated_at')
             ->get();
         return view('dashboard.admin.maintenance.index', compact('maintenances'));
     }

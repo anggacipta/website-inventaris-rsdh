@@ -23,9 +23,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tidak-setuju/direktur/{id}', [\App\Http\Controllers\Admin\PersetujuanController::class, 'storePertidaksetujuanDirektur'])->name('store.tidak.setuju.direktur');
 
     // Route Log Barang
-    Route::get('/log-barang', [\App\Http\Controllers\Admin\LogBarangController::class, 'index'])->name('log.barang');
-    Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\LogBarangController::class, 'create'])->name('create.log.barang');
-    Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\LogBarangController::class, 'store'])->name('hapus.barang');
+    Route::get('/log-barang', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'index'])->name('log.barang');
+    Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'create'])->name('create.log.barang');
+    Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'store'])->name('hapus.barang');
 
     // Route Jenis Barang
     Route::resource('jenis-barang', \App\Http\Controllers\Admin\JenisBarangController::class);
@@ -70,11 +70,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/print-sticker/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'printSticker'])->name('print.sticker');
 
     // Route Log Maintenance
-    Route::get('/log-maintenance', [\App\Http\Controllers\Admin\LogMaintenanceController::class, 'index'])->name('log.maintenance');
+    Route::get('/log-maintenance', [\App\Http\Controllers\Admin\Logs\LogMaintenanceController::class, 'index'])->name('log.maintenance');
 
     // Route Log Persetujuan Maintenance
-    Route::get('/log-persetujuan-maintenance', [\App\Http\Controllers\Admin\LogPersetujuanMaintenanceController::class, 'index'])->name('log.persetujuan.maintenance');
-    Route::get('/log-persetujuan-maintenance/{id}', [\App\Http\Controllers\Admin\LogPersetujuanMaintenanceController::class, 'show'])->name('log.persetujuan.maintenance.show');
+    Route::get('/log-persetujuan-maintenance', [\App\Http\Controllers\Admin\Logs\LogPersetujuanMaintenanceController::class, 'index'])->name('log.persetujuan.maintenance');
+    Route::get('/log-persetujuan-maintenance/{id}', [\App\Http\Controllers\Admin\Logs\LogPersetujuanMaintenanceController::class, 'show'])->name('log.persetujuan.maintenance.show');
 
     // Route Roles
     Route::resource('roles', \App\Http\Controllers\RolePermissionController::class);

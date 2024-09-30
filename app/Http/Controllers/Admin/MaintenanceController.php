@@ -29,24 +29,22 @@ class MaintenanceController extends Controller
         $maintenanceConditionId = KondisiBarang::where('kondisi_barang', 'Maintenance')->first()->id;
 
         $maintenances = Maintenance::query()
-            ->when($user->role->name === 'server', function ($query) {
-                $query->whereHas('barang.jenisBarang', function ($query) {
-                    $query->whereIn('jenis_barang', ['Komputer', 'Elektronik']);
-                });
-            })
-            ->when($user->role->name === 'iprs', function ($query) {
-                $query->whereHas('barang.jenisBarang', function ($query) {
-                    $query->whereIn('jenis_barang', ['Elektronik', 'Alat Kesehatan', 'Alat Rumah Tangga']);
-                });
-            })
-            ->when($user->role->name === 'user', function ($query) {
-                $query->whereHas('barang.unitKerja', function ($query) {
-                    $query->where('unit_kerja_id', auth()->user()->unit_kerja_id);
-                });
+            ->when($user->role->name !== 'server', function ($query) use ($user) {
+                $query->when($user->role->name === 'iprs', function ($query) {
+                    $query->whereHas('barang.jenisBarang', function ($query) {
+                        $query->whereIn('jenis_barang', ['Elektronik', 'Alat Kesehatan', 'Alat Rumah Tangga']);
+                    });
+                })
+                    ->when($user->role->name, function ($query) {
+                        $query->whereHas('barang.unitKerja', function ($query) {
+                            $query->where('unit_kerja_id', auth()->user()->unit_kerja_id);
+                        });
+                    });
             })
             ->where('kondisi_barang_id', $maintenanceConditionId)
             ->orderBy('updated_at')
             ->get();
+
         return view('dashboard.admin.maintenance.index', compact('maintenances'));
     }
 

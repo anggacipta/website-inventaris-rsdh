@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Logs;
 
 use App\Http\Controllers\Controller;
 use App\Models\LogPersetujuanMaintenance;
-use Illuminate\Http\Request;
 
 class LogPersetujuanMaintenanceController extends Controller
 {

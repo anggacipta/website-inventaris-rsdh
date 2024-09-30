@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Logs;
 
 use App\Http\Controllers\Controller;
+use App\Models\JenisBarang;
 use App\Models\Maintenance;
 use App\Models\UnitKerja;
-use App\Models\JenisBarang;
 use Illuminate\Http\Request;
 
 class LogMaintenanceController extends Controller

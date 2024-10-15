@@ -32,9 +32,6 @@ class BarangController extends Controller
         }
 
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
-//            $barangs = Barang::whereHas('kondisiBarang', function ($query) {
-//               $query->where('kondisi_barang', '!=', 'Rusak');
-//            })->paginate(10);
             $barangs = $query->withoutTrashed()->orderBy('created_at', 'desc')->limit(200)->paginate(10);
         } else {
             $barangs = $query->where('unit_kerja_id', $unitKerjaId)
@@ -67,8 +64,6 @@ class BarangController extends Controller
 
     public function create()
     {
-//        $totalBarang = Barang::where('ruang_id', $ruangan_id)->count() + 1;
-//        $kode_barang = 'BRG' . str_pad($totalBarang, 3, '0', STR_PAD_LEFT);
         $unit_kerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $merk_barangs = MerkBarang::query()->where('merk_barang', '!=', 'Default Kategori')->get();
         $jenis_barangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
@@ -90,6 +85,7 @@ class BarangController extends Controller
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
+            'keterangan' => 'nullable',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 
@@ -125,12 +121,12 @@ class BarangController extends Controller
             'nama_barang' => 'required',
             'kode_barang' => 'required',
             'unit_kerja_id' => 'required',
-//            'kondisi_barang_id' => 'required',
             'jenis_barang_id' => 'required',
             'merk_barang_id' => 'required',
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
+            'keterangan' => 'nullable',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 

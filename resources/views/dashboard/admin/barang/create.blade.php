@@ -119,7 +119,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="tahun_pengadaan" class="form-label">Tahun Pengadaan</label>
-                                        <select name="tahun_pengadaan_kode" class="form-control" id="tahun_pengadaan">
+                                        <select name="tahun_pengadaan_kode" class="form-select" id="tahun_pengadaan">
                                             @for ($year = date('Y'); $year >= 2000; $year--)
                                                 <option value="{{ $year }}">{{ $year }}</option>
                                             @endfor

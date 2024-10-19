@@ -24,11 +24,9 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if (Auth::check() && Auth::user()->role->name == 'server') {
-                    return redirect('/dashboard');
-                } elseif (Auth::check() && Auth::user()->role->name == 'iprs') {
-                    return redirect('/barang');
-                } elseif (Auth::check() && Auth::user()->role->name == 'user') {
-                    return redirect('/barang');
+                    return redirect()->route('dashboard.index');
+                } elseif (Auth::check() && Auth::user()->role->name) {
+                    return redirect()->route('barang.index');
                 }
             }
         }

@@ -26,8 +26,10 @@
                         <th>Gambar Barang</th>
                         <th>Nama Barang</th>
                         <th>Kode Barang</th>
+                        <th>No Seri</th>
                         <th>Distributor</th>
                         <th>No AKL/AKD</th>
+                        <th>Tanggal Pengadaan</th>
                         <th>Tahun Pengadaan</th>
                         <th>Harga</th>
                         <th>Sumber Pengadaan</th>
@@ -48,9 +50,11 @@
                             <td><img src="{{  asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
                             <td>{{ $barang->nama_barang }}</td>
                             <td>{{ $barang->kode_barang }}</td>
+                            <td>{{ $barang->no_seri }}</td>
                             <td>{{ $barang->distributor }}</td>
                             <td>{{ $barang->no_akl_akd }}</td>
                             <td>{{ $barang->tahun_pengadaan }}</td>
+                            <td>{{ $barang->tahun }}</td>
                             <td>{{ 'Rp' . number_format($barang->harga, 2, ',', '.') }}</td>
                             <td>{{ $barang->sumberPengadaan->sumber_pengadaan }}</td>
                             <td>{{ $barang->unitKerja->unit_kerja }}</td>

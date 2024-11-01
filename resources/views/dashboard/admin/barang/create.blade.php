@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Tahun Pengadaan</label>
+                                        <label for="exampleInputEmail1" class="form-label">Tanggal Pengadaan</label>
                                         <input type="text" name="tahun_pengadaan" class="form-control" id="tahun_pengadaan"
                                                aria-describedby="emailHelp">
                                     </div>
@@ -119,11 +119,18 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="tahun_pengadaan" class="form-label">Tahun Pengadaan</label>
-                                        <select name="tahun_pengadaan_kode" class="form-select" id="tahun_pengadaan">
+                                        <select name="tahun" class="form-select" id="tahun_pengadaan">
                                             @for ($year = date('Y'); $year >= 2000; $year--)
                                                 <option value="{{ $year }}">{{ $year }}</option>
                                             @endfor
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="no_seri" class="form-label">No Seri</label>
+                                        <input type="text" name="no_seri" class="form-control" id="no_seri"
+                                               aria-describedby="emailHelp">
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +139,7 @@
                                 <textarea class="form-control" name="keterangan" id="keterangan" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Foto Barang</label>
+                                <label for="exampleInputEmail1" class="form-label">Foto Barang(boleh kosong)</label>
                                 <input type="file" name="photo" class="form-control" id="photo">
                             </div>
                             <div class="mb-3">
@@ -215,9 +222,6 @@
                 } else if (!sumberPengadaanId || sumberPengadaanId === 'Pilih Sumber Pengadaan') {
                     alert('Sumber pengadaan tidak boleh kosong');
                     e.preventDefault();
-                } else if (!photo) {
-                    alert('Photo tidak boleh kosong');
-                    e.preventDefault();
                 }
             });
         });
@@ -228,7 +232,7 @@
             function fetchKodeBarang() {
                 var unitKerjaId = $("select[name='unit_kerja_id']").val();
                 var jenisBarangId = $("select[name='jenis_barang_id']").val();
-                var tahunPengadaanKode = $("select[name='tahun_pengadaan_kode']").val();
+                var tahunPengadaanKode = $("select[name='tahun']").val();
                 if (unitKerjaId && jenisBarangId) {
                     $.ajax({
                         url: "{{ url('/barang/kode-barang/') }}/" + unitKerjaId + "/" + jenisBarangId + "/" + tahunPengadaanKode,
@@ -249,7 +253,7 @@
                 }
             }
 
-            $("select[name='unit_kerja_id'], select[name='jenis_barang_id'], select[name='tahun_pengadaan_kode']").on('change', fetchKodeBarang);
+            $("select[name='unit_kerja_id'], select[name='jenis_barang_id'], select[name='tahun']").on('change', fetchKodeBarang);
         });
     </script>
 @endsection

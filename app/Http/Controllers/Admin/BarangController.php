@@ -85,8 +85,10 @@ class BarangController extends Controller
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
+            'no_seri' => 'nullable',
+            'tahun' => 'required',
             'keterangan' => 'nullable',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 
         // Convert 'tahun_pengadaan' to 'YYYY-MM-DD' format

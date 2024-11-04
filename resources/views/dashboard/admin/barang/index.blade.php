@@ -47,7 +47,7 @@
                     @foreach ($barangs as $barang)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td><img src="{{  asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
+                            <td><img src="{{asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
                             <td>{{ $barang->nama_barang }}</td>
                             <td>{{ $barang->kode_barang }}</td>
                             <td>{{ $barang->no_seri }}</td>

@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="distributor" class="form-label">Distributor</label>
+                                        <label for="distributor" class="form-label">Distributor(bisa dikosongkan)</label>
                                         <input type="text" name="distributor" class="form-control" id="distributor"
                                                aria-describedby="emailHelp">
                                     </div>
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="no_akl_akd" class="form-label">No AKL/AKD</label>
+                                        <label for="no_akl_akd" class="form-label">No AKL/AKD(bisa dikosongkan)</label>
                                         <input type="text" name="no_akl_akd" class="form-control" id="no_akl_akd"
                                                aria-describedby="emailHelp">
                                     </div>
@@ -99,7 +99,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="formatted_harga" class="form-label">Harga</label>
-                                        <input type="text" id="formatted_harga" class="form-control" placeholder="Masukkan harga">
+                                        <input type="text" id="formatted_harga" class="form-control">
                                         <input type="hidden" name="harga" id="harga">
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="no_seri" class="form-label">No Seri</label>
+                                        <label for="no_seri" class="form-label">No Seri(bisa dikosongkan)</label>
                                         <input type="text" name="no_seri" class="form-control" id="no_seri"
                                                aria-describedby="emailHelp">
                                     </div>

@@ -98,6 +98,8 @@ class BarangController extends Controller
             $imageName = time().'.'.$request->photo->extension(); // Menambahkan timestamp ke nama file
             $request->photo->move(public_path('images'), $imageName);
             $barangData['photo'] = $imageName;
+        } else {
+            $barangData['photo'] = 'no_image.png';
         }
 
         Barang::create($barangData);

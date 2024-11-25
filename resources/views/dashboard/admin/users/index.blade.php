@@ -5,6 +5,9 @@
     <!--  Header End -->
     <div class="container-fluid">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="card-title mb-4">Data Users</h4>
+            </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>

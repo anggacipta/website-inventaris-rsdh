@@ -5,11 +5,13 @@
     <!--  Header End -->
     <div class="container-fluid">
         <div class="card-body">
-            <div class="clearfix"></div> <!-- for spacing -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title mb-4">Data Barang Rusak</h4>
+            </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>ID Barang</th>
+                    <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Alasan rusak</th>
                     <th>Biaya</th>
@@ -20,7 +22,7 @@
                 <tbody>
                 @foreach ($maintenances as $maint)
                     <tr>
-                        <th scope="row">{{ $maint->barang->id }}</th>
+                        <th scope="row">{{ $maint->barang->kode_barang }}</th>
                         <td>{{ $maint->barang->nama_barang }}</td>
                         <td>{{ $maint->alasan_rusak }}</td>
                         <td>{{ $maint->harga }}</td>

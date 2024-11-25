@@ -3,6 +3,9 @@
     @include('dashboard.admin.layouts.navbar')
     <div class="container-fluid">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title mb-4">Data Log Maintenance</h4>
+            </div>
             <form action="{{ route('log.maintenance') }}" method="GET">
                 <div class="row mb-3">
                     <div class="col-md-3">

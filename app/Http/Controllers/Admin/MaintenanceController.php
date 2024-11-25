@@ -42,6 +42,7 @@ class MaintenanceController extends Controller
                     });
             })
             ->where('kondisi_barang_id', $maintenanceConditionId)
+            ->with('barang')
             ->orderBy('updated_at')
             ->get();
 
@@ -55,6 +56,7 @@ class MaintenanceController extends Controller
                 $query->where('kondisi_barang', 'like', 'Maintenance Lanjutan')
                     ->orWhere('kondisi_barang', 'like', 'maintenance lanjutan');
             })
+            ->with('barang')
             ->get();
         return view('dashboard.admin.maintenance.index_maintenance_lanjutan', compact('maintenances'));
     }
@@ -66,6 +68,7 @@ class MaintenanceController extends Controller
                 $query->where('kondisi_barang', 'like', 'Berhasil Diperbaiki')
                     ->orWhere('kondisi_barang', 'like', 'berhasil diperbaiki');
             })
+            ->with('barang')
             ->get();
         return view('dashboard.admin.maintenance.index_maintenance_diperbaiki', compact('maintenances'));
     }
@@ -77,6 +80,7 @@ class MaintenanceController extends Controller
                 $query->where('kondisi_barang', 'like', 'Rusak')
                     ->orWhere('kondisi_barang', 'like', 'rusak');
             })
+            ->with('barang')
             ->get();
         return view('dashboard.admin.maintenance.index_maintenance_rusak', compact('maintenances'));
     }

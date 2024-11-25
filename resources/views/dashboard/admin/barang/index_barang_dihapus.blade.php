@@ -6,13 +6,7 @@
     <div class="container-fluid">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="card-title mb-4">Data Barang</h4>
-                <div>
-                    <a href="{{ route('print.sticker.all') }}" class="btn text-light" style="background-color: darkgreen">Print All Label</a>
-                    @can('create.barang')
-                        <a href="{{ route('barang.create') }}" class="btn btn-primary">Tambah Barang</a>
-                    @endcan
-                </div>
+                <h4 class="card-title mb-4">Data Barang Dihapus</h4>
             </div>
             <div class="table-responsive">
                 <table id="" class="table table-bordered table-striped">

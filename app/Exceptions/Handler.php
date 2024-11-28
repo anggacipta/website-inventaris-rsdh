@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -35,7 +37,24 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            $this->renderable(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e, $request) {
+                return response()->view('errors.404', [], 404);
+            });
+
+            $this->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+                return response()->view('errors.404', [], 404);
+            });
+
+            $this->renderable(function (HttpException $e, $request) {
+                if ($e->getStatusCode() == 403) {
+                    return response()->view('errors.403', [], 403);
+                }
+                return response()->view('errors.default', [], 512);
+            });
+
+            $this->renderable(function (TokenMismatchException $e, $request) {
+                return response()->view('errors.419', [], 419);
+            });
         });
     }
 }

@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::query()->limit(50)->get();
+        $users = User::query()->with('role')->limit(50)->get();
         return view('dashboard.admin.users.index', compact('users'));
     }
 

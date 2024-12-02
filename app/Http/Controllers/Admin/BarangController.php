@@ -32,21 +32,23 @@ class BarangController extends Controller
         }
 
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
-            $barangs = $query->withoutTrashed()->orderBy('created_at', 'desc')->limit(200)->paginate(10);
+            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
         } else {
-            $barangs = $query->where('unit_kerja_id', $unitKerjaId)
+            $query->where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->withoutTrashed()->orderBy('created_at', 'desc')->limit(200)->paginate(10);
+                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
         }
+
+        $barangs = $query->paginate(10);
 
         return view('dashboard.admin.barang.index', compact('barangs'));
     }
 
     public function trash()
     {
-        $barangs = Barang::onlyTrashed()->paginate(10);
+        $barangs = Barang::onlyTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->paginate(10);
         return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs'));
     }
 

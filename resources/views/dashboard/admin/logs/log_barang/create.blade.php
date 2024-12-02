@@ -31,6 +31,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Kode Barang</label>
+                                        <h5 class="">{{ $barang->kode_barang }}</h5>
+                                        <input type="hidden" name="kode_barang" class="form-control" id="nama_barang"
+                                               aria-describedby="emailHelp" value="{{ $barang->kode_barang }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Unit Kerja</label>
                                         <h5 class="">{{ $barang->unitKerja->unit_kerja }}</h5>
                                         <input type="hidden" name="unit_kerja" class="form-control" id="unit_kerja"

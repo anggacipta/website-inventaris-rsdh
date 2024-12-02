@@ -42,6 +42,9 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $maintenances->links('pagination::bootstrap-4') }}
+            </div>
         </div>
         @include('dashboard.admin.layouts.footer')
     </div>

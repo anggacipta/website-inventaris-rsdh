@@ -30,7 +30,7 @@ class LogBarangController extends Controller
         ]);
 
         LogBarang::create([
-            'id_barang' => $id,
+            'id_barang' => $request->kode_barang,
             'nama_barang' => $request->nama_barang,
             'unit_kerja' => $request->unit_kerja,
             'keterangan' => $request->keterangan

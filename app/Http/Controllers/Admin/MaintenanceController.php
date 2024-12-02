@@ -44,7 +44,7 @@ class MaintenanceController extends Controller
             ->where('kondisi_barang_id', $maintenanceConditionId)
             ->with('barang')
             ->orderBy('updated_at')
-            ->get();
+            ->paginate(10);
 
         return view('dashboard.admin.maintenance.index', compact('maintenances'));
     }
@@ -57,7 +57,7 @@ class MaintenanceController extends Controller
                     ->orWhere('kondisi_barang', 'like', 'maintenance lanjutan');
             })
             ->with('barang')
-            ->get();
+            ->paginate(10);
         return view('dashboard.admin.maintenance.index_maintenance_lanjutan', compact('maintenances'));
     }
 

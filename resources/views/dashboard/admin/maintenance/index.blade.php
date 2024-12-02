@@ -21,7 +21,7 @@
                 <tbody>
                 @foreach ($maintenances as $maint)
                     <tr>
-                        <th scope="row">{{ $maint->barang->kode-barang }}</th>
+                        <th scope="row">{{ $maint->barang->kode_barang }}</th>
                         <td>{{ $maint->barang->nama_barang }}</td>
                         <td>{{ $maint->barang->unitKerja->unit_kerja }}</td>
                         <td>{{ $maint->alasan_rusak }}</td>

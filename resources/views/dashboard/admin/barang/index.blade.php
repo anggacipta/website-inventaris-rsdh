@@ -15,9 +15,33 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <form action="{{ route('barang.index') }}" method="GET" class="d-inline">
-                    <input type="text" name="search" placeholder="Cari nama, distributor atau kode barang" value="{{ request('search') }}" class="form-control d-inline" style="width: 200px;">
-                    <button type="submit" class="mt-2 mb-3 ms-2 btn btn-primary">Search</button>
+                <form action="{{ route('barang.index') }}" method="GET">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <input type="text" name="search" placeholder="Cari nama, distributor atau kode barang" value="{{ request('search') }}" class="form-control">
+                        </div>
+                        @if(auth()->user()->role->name == 'iprs' || auth()->user()->role->name == 'server')
+                            <div class="col-md-3">
+                                <select name="unit_kerja" class="form-control js-example-basic-single">
+                                    <option value="">Pilih Unit Kerja</option>
+                                    @foreach($unitKerjas as $unitKerja)
+                                        <option value="{{ $unitKerja->unit_kerja }}" {{ request('unit_kerja') == $unitKerja->unit_kerja ? 'selected' : '' }}>{{ $unitKerja->unit_kerja }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="jenis_barang" class="form-control js-example-basic-single">
+                                    <option value="">Pilih Jenis Barang</option>
+                                    @foreach($jenisBarangs as $jenisBarang)
+                                        <option value="{{ $jenisBarang->jenis_barang }}" {{ request('jenis_barang') == $jenisBarang->jenis_barang ? 'selected' : '' }}>{{ $jenisBarang->jenis_barang }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
                 </form>
                 <table id="" class="table table-bordered table-striped">
                     <thead>
@@ -47,11 +71,15 @@
                     @foreach ($barangs as $barang)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td><img src="{{asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
+                            @if($barang->photo == 'no_image.png')
+                                <td><img src="{{asset('images/no_image/no_image.png')}}" width="100" height="100" alt=""></td>
+                            @else
+                                <td><img src="{{asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
+                            @endif
                             <td>{{ $barang->nama_barang }}</td>
                             <td>{{ $barang->kode_barang }}</td>
                             <td>{{ $barang->no_seri }}</td>
-                            <td>{{ $barang->distributor }}</td>
+                            <td>{{ $barang->distributors->nama_distributor ?? 'Tidak ada distributor resmi' }}</td>
                             <td>{{ $barang->no_akl_akd }}</td>
                             <td>{{ $barang->tahun_pengadaan }}</td>
                             <td>{{ $barang->tahun }}</td>

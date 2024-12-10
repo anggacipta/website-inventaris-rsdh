@@ -42,8 +42,12 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="distributor" class="form-label">Distributor(bisa dikosongkan)</label>
-                                        <input type="text" name="distributor" class="form-control" id="distributor"
-                                               aria-describedby="emailHelp">
+                                        <select class="form-control js-example-basic-single" name="distributor_id" id="distributor">
+                                            <option value="">Pilih Distributor</option>
+                                            @foreach ($distributors as $dist)
+                                                <option value="{{ $dist->id }}">{{ $dist->nama_distributor }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

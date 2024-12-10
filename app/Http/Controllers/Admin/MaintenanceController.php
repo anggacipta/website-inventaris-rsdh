@@ -35,9 +35,9 @@ class MaintenanceController extends Controller
                         $query->whereIn('jenis_barang', ['Elektronik', 'Alat Kesehatan', 'Alat Rumah Tangga']);
                     });
                 })
-                    ->when($user->role->name, function ($query) {
-                        $query->whereHas('barang.unitKerja', function ($query) {
-                            $query->where('unit_kerja_id', auth()->user()->unit_kerja_id);
+                    ->when($user->role->name !== 'iprs', function ($query) use ($user) {
+                        $query->whereHas('barang.unitKerja', function ($query) use ($user) {
+                            $query->where('unit_kerja_id', $user->unit_kerja_id);
                         });
                     });
             })
@@ -61,15 +61,21 @@ class MaintenanceController extends Controller
         return view('dashboard.admin.maintenance.index_maintenance_lanjutan', compact('maintenances'));
     }
 
-    public function indexMaintenanceDiperbaiki()
+    public function indexMaintenanceDiperbaiki(Request $request)
     {
         $maintenances = Maintenance::query()
             ->whereHas('kondisiBarang', function ($query) {
                 $query->where('kondisi_barang', 'like', 'Berhasil Diperbaiki')
                     ->orWhere('kondisi_barang', 'like', 'berhasil diperbaiki');
             })
+            ->when($request->bulan, function ($query) use ($request) {
+                $query->whereMonth('created_at', $request->bulan);
+            })
+            ->when($request->tahun, function ($query) use ($request) {
+                $query->whereYear('created_at', $request->tahun);
+            })
             ->with('barang')
-            ->get();
+            ->paginate(10);
         return view('dashboard.admin.maintenance.index_maintenance_diperbaiki', compact('maintenances'));
     }
 

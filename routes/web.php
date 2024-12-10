@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
         // Route Unit Kerja
         Route::resource('unit-kerja', \App\Http\Controllers\Admin\UnitKerjaController::class);
 
+        // Route Distributor
+        Route::resource('distributor', \App\Http\Controllers\Admin\DistributorController::class);
+
         // Route Vendor
         Route::resource('vendor', \App\Http\Controllers\Admin\VendorController::class);
     });

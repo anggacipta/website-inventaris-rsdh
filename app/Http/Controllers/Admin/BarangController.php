@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Distributor;
 use App\Models\JenisBarang;
 use App\Models\KondisiBarang;
 use App\Models\MerkBarang;
@@ -22,28 +23,59 @@ class BarangController extends Controller
         $user = auth()->user();
         $unitKerjaId = $user->unit_kerja_id;
         $search = $request->input('search');
+        $unitKerja = $request->input('unit_kerja');
+        $jenisBarang = $request->input('jenis_barang');
 
         $query = Barang::query();
 
+        // Filter Barang by search and select query
         if ($search) {
-            $query->where('nama_barang', 'like', '%' . $search . '%')
-                ->orWhere('kode_barang', 'like', '%' . $search . '%')
-                ->orWhere('distributor', 'like', '%' . $search . '%');
+            if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_barang', 'like', '%' . $search . '%')
+                        ->orWhere('kode_barang', 'like', '%' . $search . '%')
+                        ->orWhere('distributor', 'like', '%' . $search . '%');
+                });
+            } else {
+                $query->where('unit_kerja_id', $unitKerjaId)
+                    ->where(function ($q) use ($search) {
+                        $q->where('nama_barang', 'like', '%' . $search . '%')
+                            ->orWhere('kode_barang', 'like', '%' . $search . '%')
+                            ->orWhere('distributor', 'like', '%' . $search . '%');
+                    });
+            }
         }
 
+        if ($unitKerja) {
+            $query->whereHas('unitKerja', function ($q) use ($request) {
+                $q->where('unit_kerja', $request->unit_kerja);
+            });
+        }
+
+        if ($jenisBarang) {
+            $query->whereHas('jenisBarang', function ($q) use ($request) {
+                $q->where('jenis_barang', $request->jenis_barang);
+            });
+        }
+        // End
+
+        // Get all Barang if the user is from Logistik or IPSRS
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
-            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
+            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc')->limit(200);
         } else {
+            // Get Barang by unit kerja if the user is not from Logistik or IPSRS
             $query->where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
+                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc')->limit(200);
         }
 
         $barangs = $query->paginate(10);
+        $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
+        $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 
-        return view('dashboard.admin.barang.index', compact('barangs'));
+        return view('dashboard.admin.barang.index', compact('barangs', 'unitKerjas', 'jenisBarangs'));
     }
 
     public function trash()
@@ -71,8 +103,9 @@ class BarangController extends Controller
         $jenis_barangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
         $kondisi_barangs = KondisiBarang::query()->where('kondisi_barang', '!=', 'Default Kategori')->get();
         $sumber_pengadaans = SumberPengadaan::query()->where('sumber_pengadaan', '!=', 'Default Kategori')->get();
+        $distributors = Distributor::query()->where('nama_distributor', '!=', 'Default Kategori')->get();
         return view('dashboard.admin.barang.create', compact('unit_kerjas', 'merk_barangs',
-            'jenis_barangs', 'kondisi_barangs', 'sumber_pengadaans'));
+            'jenis_barangs', 'kondisi_barangs', 'sumber_pengadaans', 'distributors'));
     }
 
     public function store(Request $request)
@@ -85,6 +118,7 @@ class BarangController extends Controller
             'jenis_barang_id' => 'required',
             'merk_barang_id' => 'required',
             'sumber_pengadaan_id' => 'required',
+            'distributor_id' => 'nullable',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
             'no_seri' => 'nullable',
@@ -132,6 +166,7 @@ class BarangController extends Controller
             'sumber_pengadaan_id' => 'required',
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
+            'no_seri' => 'nullable',
             'keterangan' => 'nullable',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
@@ -243,9 +278,23 @@ class BarangController extends Controller
 
     public function printStickerAll()
     {
-        $barangs = Barang::all();
-//        $pdf = Pdf::loadView('dashboard.admin.barang.print_sticker_all', compact('barangs'));
-//        return $pdf->stream('sticker_all.pdf');
+        $user = auth()->user();
+        $unitKerjaId = $user->unit_kerja_id;
+
+        $query = Barang::query();
+
+        if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
+            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
+        } else {
+            // Get Barang by unit kerja if the user is not from Logistik or IPSRS
+            $query->where('unit_kerja_id', $unitKerjaId)
+                ->whereHas('kondisiBarang', function ($query) {
+                    $query->where('kondisi_barang', '!=', 'Rusak');
+                })
+                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->orderBy('created_at', 'desc')->limit(200);
+        }
+
+        $barangs = $query->get();
         return view('dashboard.admin.barang.print_sticker_all', compact('barangs'));
     }
 }

@@ -33,7 +33,11 @@
                     @foreach ($barangs as $barang)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td><img src="{{  asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
+                            @if($barang->photo == 'no_image.png')
+                                <td><img src="{{asset('images/no_image/no_image.png')}}" width="100" height="100" alt=""></td>
+                            @else
+                                <td><img src="{{asset('images/' . $barang->photo)}}" width="100" height="100" alt=""></td>
+                            @endif
                             <td>{{ $barang->nama_barang }}</td>
                             <td>{{ $barang->kode_barang }}</td>
                             <td>{{ $barang->distributor }}</td>

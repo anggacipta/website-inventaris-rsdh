@@ -1,14 +1,33 @@
 @extends('dashboard.admin.layouts.main')
 @section('content')
-    <!--  Header Start -->
     @include('dashboard.admin.layouts.navbar')
-    <!--  Header End -->
     <div class="container-fluid">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="card-title mb-4">Data Maintenance Diperbaiki</h4>
+                <form method="GET" action="{{ route('maintenance.diperbaiki.index') }}">
+                    <div class="d-flex">
+                        <select name="bulan" class="form-select me-2">
+                            <option value="">Pilih Bulan</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::create()->month($i)->format('F') }}
+                                </option>
+                            @endfor
+                        </select>
+                        <select name="tahun" class="form-select me-2">
+                            <option value="">Pilih Tahun</option>
+                            @for ($i = 2020; $i <= \Carbon\Carbon::now()->year; $i++)
+                                <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
             </div>
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>Kode Barang</th>
@@ -58,6 +77,9 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $maintenances->links('pagination::bootstrap-4') }}
+            </div>
         </div>
         @include('dashboard.admin.layouts.footer')
     </div>

@@ -31,9 +31,6 @@
                             @can('maintenance.lanjut')
                             <a href="{{ route('maintenance.lanjutan', $maint->id) }}" class="btn btn-warning">Maintenance Lanjutan</a>
                             @endcan
-                            @can('maintenance.rusak')
-                            <a href="{{ route('maintenance.rusak', $maint->id) }}" class="btn btn-danger">Rusak</a>
-                            @endcan
                             @can('maintenance.diperbaiki')
                             <a href="{{ route('maintenance.diperbaiki', $maint->id) }}" class="btn btn-info my-2">Berhasil Diperbaiki</a>
                             @endcan

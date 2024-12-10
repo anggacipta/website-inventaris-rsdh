@@ -31,7 +31,7 @@
                             <th scope="row">{{ $maint->barang->kode_barang }}</th>
                             <td>{{ $maint->barang->nama_barang }}</td>
                             <td>{{ $maint->alasan_rusak }}</td>
-                            <td>{{ 'Rp' . number_format($maint->harga, 2, ',', '.') }}</td>
+                            <td>{{ 'Rp' . number_format($maint->harga, 0, ',', '.') }}</td>
                             <td>{{ $maint->catatan }}</td>
                             <td>{{ $maint->kondisiBarang->kondisi_barang }}</td>
                             <td>{{ \Carbon\Carbon::parse($maint->created_at)->timezone('Asia/Jakarta')->format('d M Y H:i') }}</td>
@@ -68,6 +68,9 @@
                                 @elseif($maint->persetujuan_direktur == 1 && $maint->persetujuan_staff_ahli == 1)
                                     @can('maintenance.diperbaiki')
                                     <a href="{{ route('maintenance.diperbaiki.lanjutan', $maint->id) }}" class="btn btn-info">Berhasil Diperbaiki</a>
+                                    @endcan
+                                    @can('maintenance.rusak')
+                                        <a href="{{ route('maintenance.rusak', $maint->id) }}" class="btn btn-danger mt-2">Rusak</a>
                                     @endcan
                                 @else
 

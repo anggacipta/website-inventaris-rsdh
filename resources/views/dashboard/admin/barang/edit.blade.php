@@ -127,6 +127,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="no_seri" class="form-label">No Seri</label>
+                                        <input type="text" name="no_seri" class="form-control" id="no_seri"
+                                               aria-describedby="emailHelp" value="{{ $barang->no_seri }}">
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Keterangan</label>

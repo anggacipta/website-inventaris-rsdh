@@ -45,7 +45,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="biaya" class="form-label">Biaya Maintenance / Vendor</label>
-                                <input type="number" name="harga" class="form-control" id="biaya" required aria-describedby="emailHelp">
+                                <input type="text" id="formatted_harga" class="form-control" required>
+                                <input type="hidden" name="harga" id="harga">
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>
@@ -78,6 +79,20 @@
             document.getElementById('maintenanceForm').addEventListener('submit', function() {
                 document.getElementById('spinner').style.display = 'inline-block';
                 this.querySelector('button[type="submit"]').disabled = true;
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                function formatNumberWithCommas(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+
+                $('#formatted_harga').on('input', function() {
+                    var rawValue = $(this).val().replace(/[^0-9]/g, '');
+                    $('#harga').val(rawValue);
+                    $(this).val(formatNumberWithCommas(rawValue));
+                });
             });
         </script>
 @endsection

@@ -83,7 +83,7 @@
                             <td>{{ $barang->no_akl_akd }}</td>
                             <td>{{ $barang->tahun_pengadaan }}</td>
                             <td>{{ $barang->tahun }}</td>
-                            <td>{{ 'Rp' . number_format($barang->harga, 2, ',', '.') }}</td>
+                            <td>{{ 'Rp' . number_format($barang->harga, 0, ',', '.') }}</td>
                             <td>{{ $barang->sumberPengadaan->sumber_pengadaan }}</td>
                             <td>{{ $barang->unitKerja->unit_kerja }}</td>
                             <td>{{ $barang->jenisBarang->jenis_barang }}</td>

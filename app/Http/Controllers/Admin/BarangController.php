@@ -39,9 +39,9 @@ class BarangController extends Controller
             } else {
                 $query->where('unit_kerja_id', $unitKerjaId)
                     ->where(function ($q) use ($search) {
-                        $q->where('nama_barang', 'like', '%' . $search . '%');
-//                            ->orWhere('kode_barang', 'like', '%' . $search . '%')
-//                            ->orWhere('distributor', 'like', '%' . $search . '%');
+                        $q->where('nama_barang', 'like', '%' . $search . '%')
+                            ->orWhere('kode_barang', 'like', '%' . $search . '%')
+                            ->orWhere('distributor', 'like', '%' . $search . '%');
                     });
             }
         }
@@ -71,7 +71,7 @@ class BarangController extends Controller
                 ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc');
         }
 
-        $barangs = $query->paginate(20);
+        $barangs = $query->paginate(10);
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 

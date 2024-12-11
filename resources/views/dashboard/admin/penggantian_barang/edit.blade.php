@@ -23,7 +23,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Maintenance Lanjutan Barang</h5>
+                <h5 class="card-title fw-semibold mb-4">Penggantian Barang Rusak</h5>
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -35,18 +35,18 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form id="maintenanceForm" action="{{ route('maintenance.lanjutan.update', $maintenance->id) }}" method="post">
+                        <form id="maintenanceForm" action="{{ route('penggantian.barang.update', $maintenance->id) }}" method="post">
                             @csrf
                             @method('PUT')
                             <input type="hidden" id="barangId" name="barang_id" value="{{ $maintenance->barang_id }}">
                             <div class="mb-3">
-                                <label for="keterangan" class="form-label">Catatan</label>
-                                <textarea class="form-control" name="catatan" id="keterangan" rows="6" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="biaya" class="form-label">Biaya Maintenance / Vendor</label>
-                                <input type="text" id="formatted_harga" class="form-control" required>
-                                <input type="hidden" name="harga" id="harga">
+                                <label for="penggantian_barang_id">Barang digantikan oleh:</label>
+                                <select name="penggantian_barang_id" class="form-select js-example-basic-single" id="penggantian_barang_id">
+                                    <option value="">Pilih barang pengganti</option>
+                                    @foreach ($barangs as $barang)
+                                        <option value="{{ $barang->id }}">{{ $barang->nama_barang }}: {{ $barang->kode_barang }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>
@@ -54,17 +54,10 @@
                                     <option value="{{ $kondisiBarang->id }}">{{ $kondisiBarang->kondisi_barang }}</option>
                                 </select>
                             </div>
-                           <div class="mb-3">
-                               <label for="vendor" class="form-label">Vendor</label>
-                               <select class="form-select js-example-basic-single" name="vendor_id"
-                                       id="vendor">
-                                   <option>Pilih Vendor</option>
-                                   @foreach ($vendors as $vendor)
-                                       <option value="{{ $vendor->id }}">{{ $vendor->nama_vendor }}
-                                       </option>
-                                   @endforeach
-                               </select>
-                           </div>
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label">Alasan Diganti?</label>
+                                <textarea class="form-control" name="alasan_diganti" id="keterangan" rows="6" required></textarea>
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <div class="spinner" id="spinner"></div>
                         </form>
@@ -79,20 +72,6 @@
             document.getElementById('maintenanceForm').addEventListener('submit', function() {
                 document.getElementById('spinner').style.display = 'inline-block';
                 this.querySelector('button[type="submit"]').disabled = true;
-            });
-        </script>
-
-        <script>
-            $(document).ready(function() {
-                function formatNumberWithCommas(number) {
-                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-
-                $('#formatted_harga').on('input', function() {
-                    var rawValue = $(this).val().replace(/[^0-9]/g, '');
-                    $('#harga').val(rawValue);
-                    $(this).val(formatNumberWithCommas(rawValue));
-                });
             });
         </script>
 @endsection

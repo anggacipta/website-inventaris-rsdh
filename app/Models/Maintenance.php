@@ -23,6 +23,8 @@ class Maintenance extends Model
         'catatan_staff',
         'catatan_direktur',
         'tanggal_maintenance_lanjutan',
+        'alasan_diganti',
+        'penggantian_barang_id',
     ];
 
     public function barang()
@@ -39,5 +41,10 @@ class Maintenance extends Model
     public function vendor()
     {
         return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
+    public function penggantianBarang()
+    {
+        return $this->belongsTo(Barang::class, 'penggantian_barang_id');
     }
 }

@@ -86,7 +86,7 @@ class MaintenanceController extends Controller
                 $query->where('kondisi_barang', 'like', 'Rusak')
                     ->orWhere('kondisi_barang', 'like', 'rusak');
             })
-            ->with('barang')
+            ->with(['barang', 'kondisiBarang'])
             ->get();
         return view('dashboard.admin.maintenance.index_maintenance_rusak', compact('maintenances'));
     }

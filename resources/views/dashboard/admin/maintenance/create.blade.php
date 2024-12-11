@@ -35,7 +35,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>
-                                <select name="kondisi_barang_id" class="form-control" id="kondisi_barang">
+                                <select name="kondisi_barang_id" class="form-select" id="kondisi_barang">
                                     <option value="{{ $kondisiBarang->id }}">{{ $kondisiBarang->kondisi_barang }}</option>
                                 </select>
                             </div>

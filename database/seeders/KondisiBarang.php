@@ -37,5 +37,9 @@ class KondisiBarang extends Seeder
         \App\Models\KondisiBarang::create([
             'kondisi_barang' => 'Berhasil Diperbaiki',
         ]);
+
+        \App\Models\KondisiBarang::create([
+            'kondisi_barang' => 'Digantikan',
+        ]);
     }
 }

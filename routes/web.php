@@ -47,6 +47,9 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['permission:update.barang']], function () {
         Route::get('barang/{id}/edit', [\App\Http\Controllers\Admin\BarangController::class, 'edit'])->name('barang.edit');
         Route::put('barang/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'update'])->name('barang.update');
+        Route::get('/kalibrasi-barang', [\App\Http\Controllers\Admin\KalibrasiBarangController::class, 'index'])->name('kalibrasi.barang.index');
+        Route::get('/kalibrasi-barang/{id}', [\App\Http\Controllers\Admin\KalibrasiBarangController::class, 'editKalibrasi'])->name('kalibrasi.barang.edit');
+        Route::put('/kalibrasi-barang/{id}', [\App\Http\Controllers\Admin\KalibrasiBarangController::class, 'updateKalibrasi'])->name('kalibrasi.barang.update');
     });
     Route::group(['middleware' => ['permission:delete.barang']], function () {
 //        Route::delete('barang/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroy'])->name('barang.destroy');
@@ -76,6 +79,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('maintenance-rusak', [\App\Http\Controllers\Admin\MaintenanceController::class, 'indexMaintenanceRusak'])->name('maintenance.rusak.index');
         Route::get('maintenance-rusak/{maintenanceId}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'createMaintenanceRusak'])->name('maintenance.rusak');
         Route::put('maintenance-rusak/{id}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateMaintenanceRusak'])->name('maintenance.rusak.update');
+        Route::get('barang-pergantian', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'index'])->name('penggantian.barang.index');
+        Route::get('barang-pergantian/{id}', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'edit'])->name('penggantian.barang.edit');
+        Route::put('barang-pergantian/{id}', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'update'])->name('penggantian.barang.update');
     });
     Route::group(['middleware' => ['permission:maintenance.diperbaiki']], function () {
         Route::get('maintenance-diperbaiki', [\App\Http\Controllers\Admin\MaintenanceController::class, 'indexMaintenanceDiperbaiki'])->name('maintenance.diperbaiki.index');

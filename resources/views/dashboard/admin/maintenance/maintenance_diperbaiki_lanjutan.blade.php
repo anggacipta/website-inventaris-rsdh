@@ -44,18 +44,18 @@
                                 <textarea class="form-control" name="catatan" id="keterangan" rows="6">{{ $maintenance->catatan }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="biaya" class="form-label">Biaya Maintenance</label>
+                                <label for="biaya" class="form-label">Biaya Maintenance / Vendor</label>
                                 <input type="number" name="harga" class="form-control" id="biaya" aria-describedby="emailHelp" readonly value="{{ $maintenance->harga }}">
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>
-                                <select name="kondisi_barang_id" class="form-control" id="kondisi_barang">
+                                <select name="kondisi_barang_id" class="form-select" id="kondisi_barang">
                                     <option value="{{ $kondisiBarang->id }}">{{ $kondisiBarang->kondisi_barang }}</option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Diperbaiki Oleh</label>
-                                <select name="diperbaiki" class="form-control" id="kondisi_barang">
+                                <select name="diperbaiki" class="form-select" id="kondisi_barang">
                                     <option value="vendor">Vendor</option>
                                 </select>
                             </div>

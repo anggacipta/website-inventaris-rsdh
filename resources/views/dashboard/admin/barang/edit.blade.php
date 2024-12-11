@@ -134,6 +134,12 @@
                                                aria-describedby="emailHelp" value="{{ $barang->no_seri }}">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="tanggal_kalibrasi" class="form-label">Tanggal Kalibrasi Barang</label>
+                                        <input type="date" class="form-control" name="tanggal_kalibrasi" id="tanggal_kalibrasi" value="{{ $barang->tanggal_kalibrasi }}">
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Keterangan</label>

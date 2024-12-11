@@ -136,6 +136,16 @@
                     </a>
                 </li>
                 @endcan
+                @can('update.barang')
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('kalibrasi.barang.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-file-certificate"></i>
+                        </span>
+                            <span class="hide-menu">Kalibrasi Barang</span>
+                        </a>
+                    </li>
+                @endcan
 
                 @can('maintenance')
                 <li class="nav-small-cap">
@@ -168,6 +178,14 @@
                             <i class="ti ti-home-minus"></i>
                         </span>
                         <span class="hide-menu">Data Barang Rusak</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('penggantian.barang.index') }}" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-home-eco"></i>
+                    </span>
+                        <span class="hide-menu">Data Barang Pergantian</span>
                     </a>
                 </li>
                 @endcan

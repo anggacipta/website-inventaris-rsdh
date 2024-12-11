@@ -39,9 +39,9 @@ class BarangController extends Controller
             } else {
                 $query->where('unit_kerja_id', $unitKerjaId)
                     ->where(function ($q) use ($search) {
-                        $q->where('nama_barang', 'like', '%' . $search . '%')
-                            ->orWhere('kode_barang', 'like', '%' . $search . '%')
-                            ->orWhere('distributor', 'like', '%' . $search . '%');
+                        $q->where('nama_barang', 'like', '%' . $search . '%');
+//                            ->orWhere('kode_barang', 'like', '%' . $search . '%')
+//                            ->orWhere('distributor', 'like', '%' . $search . '%');
                     });
             }
         }
@@ -61,17 +61,17 @@ class BarangController extends Controller
 
         // Get all Barang if the user is from Logistik or IPSRS
         if (in_array($unitKerjaId, [UnitKerja::where('unit_kerja', 'Logistik')->first()->id, UnitKerja::where('unit_kerja', 'IPSRS')->first()->id])) {
-            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc')->limit(200);
+            $query->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc');
         } else {
             // Get Barang by unit kerja if the user is not from Logistik or IPSRS
             $query->where('unit_kerja_id', $unitKerjaId)
                 ->whereHas('kondisiBarang', function ($query) {
                     $query->where('kondisi_barang', '!=', 'Rusak');
                 })
-                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc')->limit(200);
+                ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc');
         }
 
-        $barangs = $query->paginate(10);
+        $barangs = $query->paginate(20);
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 
@@ -124,6 +124,7 @@ class BarangController extends Controller
             'no_seri' => 'nullable',
             'tahun' => 'required',
             'keterangan' => 'nullable',
+            'tanggal_kalibrasi' => 'nullable|date',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 
@@ -168,6 +169,7 @@ class BarangController extends Controller
             'harga' => 'required',
             'no_seri' => 'nullable',
             'keterangan' => 'nullable',
+            'tanggal_kalibrasi' => 'nullable|date',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ]);
 

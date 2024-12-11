@@ -46,4 +46,9 @@ class Barang extends Model
     {
         return $this->hasMany(Maintenance::class, 'barang_id');
     }
+
+    public function penggantianBarangMaintenance()
+    {
+        return $this->hasMany(Maintenance::class, 'penggantian_barang_id');
+    }
 }

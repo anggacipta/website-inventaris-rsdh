@@ -7,18 +7,18 @@ use App\Models\Barang;
 use App\Models\LogBarang;
 use Illuminate\Http\Request;
 
-class LogBarangController extends Controller
+class LogBarangHapusController extends Controller
 {
     public function index()
     {
         $logs = LogBarang::query()->orderBy('created_at', 'desc')->limit(100)->get();
-        return view('dashboard.admin.logs.log_barang.index', compact('logs'));
+        return view('dashboard.admin.logs.log_barang_hapus.index', compact('logs'));
     }
 
     public function create($id)
     {
         $barang = Barang::find($id);
-        return view('dashboard.admin.logs.log_barang.create', compact('barang'));
+        return view('dashboard.admin.logs.log_barang_hapus.create', compact('barang'));
     }
 
     public function store(Request $request, $id)

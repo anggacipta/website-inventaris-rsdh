@@ -227,10 +227,26 @@
                 @can('log.barang.dihapus')
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('log.barang') }}" aria-expanded="false">
-                <span>
-                    <i class="ti ti-folder-off"></i>
-                </span>
+                        <span>
+                            <i class="ti ti-folder-off"></i>
+                        </span>
                         <span class="hide-menu">Log Barang Dihapus</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('log.barang.tambah') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-folders"></i>
+                        </span>
+                        <span class="hide-menu">Log Barang Ditambahkan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('log.kalibrasi.barang') }}" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-certificate"></i>
+                    </span>
+                        <span class="hide-menu">Log Kalibrasi Barang</span>
                     </a>
                 </li>
                 @endcan

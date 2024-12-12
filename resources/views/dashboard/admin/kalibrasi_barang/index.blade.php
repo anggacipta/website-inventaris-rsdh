@@ -66,7 +66,7 @@
                         <th>Unit Kerja</th>
                         <th>Jenis Barang</th>
                         <th>Merk Barang</th>
-                        <th>Tanggal Kalibrasi</th>
+                        <th>Tanggal Kalibrasi Selanjutnya</th>
                         <th>No. Sertifikat Kalibrasi</th>
                         <th>Aksi</th>
                     </tr>

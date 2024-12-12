@@ -57,8 +57,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="no_sertifikat" class="form-label">No Sertifikat</label>
-                                        <input type="text" class="form-control" name="no_sertifikat" id="no_sertifikat">
+                                        <label for="no_sertifikat" class="form-label">No Sertifikat(setelah melakukan kalibrasi)</label>
+                                        <input type="text" class="form-control" name="no_sertifikat" id="no_sertifikat" required value="{{ $barang->no_sertifikat }}">
                                     </div>
                                 </div>
                             </div>

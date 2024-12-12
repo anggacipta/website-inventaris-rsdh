@@ -8,6 +8,7 @@ use App\Models\JenisBarang;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class KalibrasiBarangController extends Controller
 {
@@ -88,6 +89,18 @@ class KalibrasiBarangController extends Controller
 
         $barang = Barang::find($id);
 
+        // Menambahkan log kalibrasi barang sebelum update data barang
+        DB::table('log_kalibrasi_barang')->insert([
+            'nama_barang' => $request->nama_barang,
+            'unit_kerja' => $request->unit_kerja,
+            'kode_barang' => $request->kode_barang,
+            'tanggal_kalibrasi' => $barang->tanggal_kalibrasi ?? 'Tidak ada tanggal kalibrasi',
+            'no_sertifikat' => $barangData['no_sertifikat'],
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Update data barang
         $barang->update($barangData);
 
         return redirect()->route('kalibrasi.barang.index')->with('success', 'Data kalibrasi barang berhasil diupdate');

@@ -44,8 +44,9 @@
                                 <textarea class="form-control" name="catatan" id="keterangan" rows="6">{{ $maintenance->catatan }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="biaya" class="form-label">Biaya Maintenance / Vendor</label>
-                                <input type="number" name="harga" class="form-control" id="biaya" aria-describedby="emailHelp" readonly value="{{ $maintenance->harga }}">
+                                <label for="biaya" class="form-label">Biaya Maintenance / Vendor(dapat diubah apabila ada pergantian harga)</label>
+                                <input type="text" id="formatted_harga" class="form-control" required value="{{ $maintenance->harga }}">
+                                <input type="hidden" name="harga" id="harga" value="{{ $maintenance->harga }}">
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>
@@ -73,6 +74,20 @@
             document.getElementById('maintenanceForm').addEventListener('submit', function() {
                 document.getElementById('spinner').style.display = 'inline-block';
                 this.querySelector('button[type="submit"]').disabled = true;
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                function formatNumberWithCommas(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+
+                $('#formatted_harga').on('input', function() {
+                    var rawValue = $(this).val().replace(/[^0-9]/g, '');
+                    $('#harga').val(rawValue);
+                    $(this).val(formatNumberWithCommas(rawValue));
+                });
             });
         </script>
 @endsection

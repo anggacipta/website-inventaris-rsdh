@@ -53,8 +53,8 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::group(['middleware' => ['permission:delete.barang']], function () {
 //        Route::delete('barang/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroy'])->name('barang.destroy');
-        Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'create'])->name('create.log.barang');
-        Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'store'])->name('hapus.barang');
+        Route::get('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangHapusController::class, 'create'])->name('create.log.barang');
+        Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangHapusController::class, 'store'])->name('hapus.barang');
     });
     Route::group(['middleware' => ['permission:barang.dihapus']], function () {
         Route::get('barang/trash', [\App\Http\Controllers\Admin\BarangController::class, 'trash'])->name('barang.trash');
@@ -140,7 +140,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/log-persetujuan-maintenance/{id}', [\App\Http\Controllers\Admin\Logs\LogPersetujuanMaintenanceController::class, 'show'])->name('log.persetujuan.maintenance.show');
     });
     Route::group(['middleware' => ['permission:log.barang.dihapus']], function () {
-        Route::get('/log-barang', [\App\Http\Controllers\Admin\Logs\LogBarangController::class, 'index'])->name('log.barang');
+        Route::get('/log-barang', [\App\Http\Controllers\Admin\Logs\LogBarangHapusController::class, 'index'])->name('log.barang');
+        Route::get('/log-barang-tambah', [\App\Http\Controllers\Admin\Logs\LogBarangTambahController::class, 'index'])->name('log.barang.tambah');
+        Route::get('/log-kalibrasi-barang', [\App\Http\Controllers\Admin\Logs\LogKalibrasiBarangController::class, 'index'])->name('log.kalibrasi.barang');
     });
 
     // Get Kode Barang

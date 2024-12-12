@@ -12,6 +12,7 @@ use App\Models\Ruangan;
 use App\Models\SumberPengadaan;
 use App\Models\UnitKerja;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -122,6 +123,7 @@ class BarangController extends Controller
             'tahun_pengadaan' => 'required|date_format:m/d/Y',
             'harga' => 'required',
             'no_seri' => 'nullable',
+            'no_akl_akd' => 'nullable',
             'tahun' => 'required',
             'keterangan' => 'nullable',
             'tanggal_kalibrasi' => 'nullable|date',
@@ -139,7 +141,20 @@ class BarangController extends Controller
             $barangData['photo'] = 'no_image.png';
         }
 
+        // Create Barang instance
         Barang::create($barangData);
+
+        // Insert to log_barang_tambah
+        DB::table('log_barang_tambah')->insert([
+           'nama_barang' => $barangData['nama_barang'],
+            'kode_barang' => $barangData['kode_barang'],
+            'no_akl_akd' => $barangData['no_akl_akd'],
+            'tahun_pengadaan' => $barangData['tahun'],
+            'harga' => $barangData['harga'],
+            'keterangan' => $barangData['keterangan'],
+            'no_seri' => $barangData['no_seri'],
+            'created_at' => now(),
+        ]);
 
         return redirect()->back()->with('success', 'Barang berhasil ditambahkan');
     }

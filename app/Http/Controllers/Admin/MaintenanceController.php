@@ -75,7 +75,8 @@ class MaintenanceController extends Controller
                 $query->whereYear('created_at', $request->tahun);
             })
             ->with('barang')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends($request->except('page'));
         return view('dashboard.admin.maintenance.index_maintenance_diperbaiki', compact('maintenances'));
     }
 

@@ -38,11 +38,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('barang', [\App\Http\Controllers\Admin\BarangController::class, 'store'])->name('barang.store');
     });
     Route::group(['middleware' => ['permission:read.barang']], function () {
-        // Print for Barang
+        // Print for Label Barang
         Route::get('/print-sticker-all', [\App\Http\Controllers\Admin\BarangController::class, 'printStickerAll'])->name('print.sticker.all');
         Route::get('/print-sticker/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'printSticker'])->name('print.sticker');
         // Read Barang
         Route::get('barang', [\App\Http\Controllers\Admin\BarangController::class, 'index'])->name('barang.index');
+        // Print for Barang Report
+        Route::get('barang/pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'export'])->name('barang.pdf');
     });
     Route::group(['middleware' => ['permission:update.barang']], function () {
         Route::get('barang/{id}/edit', [\App\Http\Controllers\Admin\BarangController::class, 'edit'])->name('barang.edit');
@@ -57,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/hapus/log-barang/{id}', [\App\Http\Controllers\Admin\Logs\LogBarangHapusController::class, 'store'])->name('hapus.barang');
     });
     Route::group(['middleware' => ['permission:barang.dihapus']], function () {
+        // Route Barang Dihapus Report
+        Route::get('barang-dihapus/pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportOnlyTrashed'])->name('barang.dihapus.pdf');
         Route::get('barang/trash', [\App\Http\Controllers\Admin\BarangController::class, 'trash'])->name('barang.trash');
         Route::patch('/barang/restore/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'restore'])->name('barang.restore');
         Route::delete('/barang/forceDelete/{id}', [\App\Http\Controllers\Admin\BarangController::class, 'destroyPermanent'])->name('barang.forceDelete');
@@ -134,15 +138,20 @@ Route::middleware(['auth'])->group(function () {
     // Route Log
     Route::group(['middleware' => ['permission:log.maintenance']], function () {
         Route::get('/log-maintenance', [\App\Http\Controllers\Admin\Logs\LogMaintenanceController::class, 'index'])->name('log.maintenance');
+        Route::get('/log-maintenance/export-pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportLogMaintenance'])->name('log.maintenance.pdf');
     });
     Route::group(['middleware' => ['permission:log.persetujuan.maintenance']], function () {
         Route::get('/log-persetujuan-maintenance', [\App\Http\Controllers\Admin\Logs\LogPersetujuanMaintenanceController::class, 'index'])->name('log.persetujuan.maintenance');
         Route::get('/log-persetujuan-maintenance/{id}', [\App\Http\Controllers\Admin\Logs\LogPersetujuanMaintenanceController::class, 'show'])->name('log.persetujuan.maintenance.show');
+        Route::get('/log-persetujuans-maintenance/export-pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportLogPersetujuanMaintenance'])->name('log.persetujuan.maintenance.pdf');
     });
     Route::group(['middleware' => ['permission:log.barang.dihapus']], function () {
         Route::get('/log-barang', [\App\Http\Controllers\Admin\Logs\LogBarangHapusController::class, 'index'])->name('log.barang');
         Route::get('/log-barang-tambah', [\App\Http\Controllers\Admin\Logs\LogBarangTambahController::class, 'index'])->name('log.barang.tambah');
         Route::get('/log-kalibrasi-barang', [\App\Http\Controllers\Admin\Logs\LogKalibrasiBarangController::class, 'index'])->name('log.kalibrasi.barang');
+        Route::get('/log-barang-tambah/pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportLogBarangTambah'])->name('log.barang.tambah.pdf');
+        Route::get('/log-barang-dihapus/export-pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportLogBarangDihapus'])->name('log.barang.dihapus.pdf');
+        Route::get('/log-kalibrasi-barang/export-pdf', [\App\Http\Controllers\Admin\ExportLaporanController::class, 'exportLogKalibrasiBarang'])->name('log.kalibrasi.barang.pdf');
     });
 
     // Get Kode Barang

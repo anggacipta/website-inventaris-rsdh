@@ -9,9 +9,21 @@ use Illuminate\Http\Request;
 
 class LogBarangHapusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $logs = LogBarang::query()->orderBy('created_at', 'desc')->limit(100)->get();
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+        $query = LogBarang::query();
+
+        if ($bulan) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        if ($tahun) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        $logs = $query->orderBy('created_at', 'desc')->paginate(10)->appends($request->except('page'));
         return view('dashboard.admin.logs.log_barang_hapus.index', compact('logs'));
     }
 

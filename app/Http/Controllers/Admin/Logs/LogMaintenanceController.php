@@ -12,6 +12,8 @@ class LogMaintenanceController extends Controller
 {
     public function index(Request $request)
     {
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
         $query = Maintenance::query();
 
         if ($request->filled('unit_kerja')) {
@@ -32,7 +34,15 @@ class LogMaintenanceController extends Controller
             });
         }
 
-        $maintenances = $query->orderBy('updated_at', 'desc')->with('barang')->limit(100)->paginate(10);
+        if ($bulan) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        if ($tahun) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        $maintenances = $query->orderBy('updated_at', 'desc')->with('barang')->paginate(10)->appends($request->except('page'));
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 

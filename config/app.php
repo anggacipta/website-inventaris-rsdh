@@ -169,6 +169,7 @@ return [
          */
         \Spatie\Permission\PermissionServiceProvider::class,
         \Barryvdh\DomPDF\ServiceProvider::class,
+        \Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -192,7 +193,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'PDF' => \Barryvdh\DomPDF\Facade\Pdf::class,
+        'Pdf' => \Barryvdh\DomPDF\Facade\Pdf::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

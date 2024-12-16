@@ -70,6 +70,42 @@
                     {{ $barangs->links('pagination::bootstrap-4') }}
                 </div>
             </div>
+            @if(auth()->user()->role->name == 'iprs' || auth()->user()->role->name == 'server')
+                <div class="mt-4" style="max-width: 600px;">
+                    <form action="{{ route('barang.dihapus.pdf') }}" method="GET" class="d-inline" id="export-form">
+                        <div class="row">
+                            <div class="col-3">
+                                <select name="format_export" class="form-select me-2 js-example-basic-single">
+                                    <option value="pdf">PDF</option>
+                                    <option value="excel">Excel</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select name="unit_kerja" class="form-select me-2 js-example-basic-single">
+                                    <option value="">Pilih Unit Kerja</option>
+                                    @foreach($unitKerjas as $unitKerja)
+                                        <option value="{{ $unitKerja->unit_kerja }}">{{ $unitKerja->unit_kerja }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <select name="tahun" class="form-select js-example-basic-single">
+                                    <option value="" class="">Pilih Tahun</option>
+                                    @for($i = now()->year; $i >= now()->year - 10; $i--)
+                                        <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <button type="submit" class="btn btn-primary" id="export-btn">
+                                    Export
+                                    <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            @endif
         </div>
         @include('dashboard.admin.layouts.footer')
     </div>

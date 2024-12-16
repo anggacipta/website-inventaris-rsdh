@@ -31,7 +31,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Unit Kerja</label>
-                                        <select class="form-control js-example-basic-single" name="unit_kerja_id" id="unit_kerja">
+                                        <select class="form-select js-example-basic-single" name="unit_kerja_id" id="unit_kerja">
                                             <option>Pilih unit kerja</option>
                                             @foreach ($unit_kerjas as $unitKerja)
                                                 <option value="{{ $unitKerja->id }}">{{ $unitKerja->unit_kerja }}</option>
@@ -42,7 +42,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="distributor" class="form-label">Distributor(bisa dikosongkan)</label>
-                                        <select class="form-control js-example-basic-single" name="distributor_id" id="distributor">
+                                        <select class="form-select js-example-basic-single" name="distributor_id" id="distributor">
                                             <option value="">Pilih Distributor</option>
                                             @foreach ($distributors as $dist)
                                                 <option value="{{ $dist->id }}">{{ $dist->nama_distributor }}</option>
@@ -53,7 +53,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="jenis_barang" class="form-label">Jenis Barang</label>
-                                        <select class="form-control js-example-basic-single" name="jenis_barang_id"
+                                        <select class="form-select js-example-basic-single" name="jenis_barang_id"
                                                 id="jenis_barang">
                                             <option>Pilih Jenis Barang</option>
                                             @foreach ($jenis_barangs as $jenisBarang)
@@ -72,7 +72,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Merk Barang</label>
-                                        <select class="form-control js-example-basic-single" name="merk_barang_id" id="merk_barang">
+                                        <select class="form-select js-example-basic-single" name="merk_barang_id" id="merk_barang">
                                             <option>Pilih Merk Barang</option>
                                             @foreach ($merk_barangs as $merkBarang)
                                                 <option value="{{ $merkBarang->id }}">{{ $merkBarang->merk_barang }}</option>
@@ -90,7 +90,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="kondisi_barang" class="form-label">Kondisi Barang</label>
-                                        <select class="form-control js-example-basic-single" name="kondisi_barang_id"
+                                        <select class="form-select js-example-basic-single" name="kondisi_barang_id"
                                                 id="kondisi_barang">
                                             <option>Pilih Kondisi Barang</option>
                                             @foreach ($kondisi_barangs as $kondisiBarang)

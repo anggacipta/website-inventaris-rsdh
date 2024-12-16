@@ -104,10 +104,10 @@
                             </td>
                             <td class="">
                                 @can('update.barang')
-                                <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning mb-2">Edit</a>
+                                    <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning mb-2">Edit</a>
                                 @endcan
                                 @can('delete.barang')
-                                <a href="{{ route('create.log.barang', $barang->id) }}" class="btn btn-danger">Hapus</a>
+                                    <a href="{{ route('create.log.barang', $barang->id) }}" class="btn btn-danger">Hapus</a>
                                 @endcan
                             </td>
                         </tr>
@@ -118,6 +118,42 @@
                     {{ $barangs->links('pagination::bootstrap-4') }}
                 </div>
             </div>
+            @if(auth()->user()->role->name == 'iprs' || auth()->user()->role->name == 'server')
+            <div class="mt-4" style="max-width: 600px;">
+                <form action="{{ route('barang.pdf') }}" method="GET" class="d-inline" id="export-form">
+                    <div class="row">
+                        <div class="col-3">
+                            <select name="format_export" class="form-select me-2 js-example-basic-single">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select name="unit_kerja" class="form-select me-2 js-example-basic-single">
+                                <option value="">Pilih Unit Kerja</option>
+                                @foreach($unitKerjas as $unitKerja)
+                                    <option value="{{ $unitKerja->unit_kerja }}">{{ $unitKerja->unit_kerja }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select name="tahun" class="form-select js-example-basic-single">
+                                <option value="" class="">Pilih Tahun</option>
+                                @for($i = now()->year; $i >= now()->year - 10; $i--)
+                                    <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-primary" id="export-btn">
+                                Export
+                                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @endif
         </div>
         @include('dashboard.admin.layouts.footer')
     </div>
@@ -143,6 +179,38 @@
                     });
                 });
             });
+
+            // const exportForm = document.getElementById('export-form');
+            // const exportBtn = document.getElementById('export-btn');
+            // const spinner = document.getElementById('spinner');
+            //
+            // exportForm.addEventListener('submit', function (event) {
+            //     event.preventDefault();
+            //     spinner.style.display = 'inline-block';
+            //     exportBtn.disabled = true;
+            //
+            //     const formData = new FormData(exportForm);
+            //     const queryString = new URLSearchParams(formData).toString();
+            //     const url = `${exportForm.action}?${queryString}`;
+            //
+            //     fetch(url)
+            //         .then(response => response.blob())
+            //         .then(blob => {
+            //             const url = window.URL.createObjectURL(blob);
+            //             const a = document.createElement('a');
+            //             a.style.display = 'none';
+            //             a.href = url;
+            //             a.download = 'laporan_barang.' + (formData.get('format_export') === 'pdf' ? 'pdf' : 'xlsx');
+            //             document.body.appendChild(a);
+            //             a.click();
+            //             window.URL.revokeObjectURL(url);
+            //         })
+            //         .catch(error => console.error('Error:', error))
+            //         .finally(() => {
+            //             spinner.style.display = 'none';
+            //             exportBtn.disabled = false;
+            //         });
+            // });
         });
     </script>
 

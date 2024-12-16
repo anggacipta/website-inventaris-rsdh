@@ -8,12 +8,11 @@ use App\Models\Distributor;
 use App\Models\JenisBarang;
 use App\Models\KondisiBarang;
 use App\Models\MerkBarang;
-use App\Models\Ruangan;
 use App\Models\SumberPengadaan;
 use App\Models\UnitKerja;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Options;
 use Illuminate\Support\Facades\DB;
-use TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -72,7 +71,7 @@ class BarangController extends Controller
                 ->withoutTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->orderBy('created_at', 'desc');
         }
 
-        $barangs = $query->paginate(10);
+        $barangs = $query->paginate(10)->appends($request->except('page'));
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
 
@@ -81,8 +80,9 @@ class BarangController extends Controller
 
     public function trash()
     {
+        $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
         $barangs = Barang::onlyTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->paginate(10);
-        return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs'));
+        return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs', 'unitKerjas'));
     }
 
     public function restore($id)
@@ -313,5 +313,15 @@ class BarangController extends Controller
 
         $barangs = $query->get();
         return view('dashboard.admin.barang.print_sticker_all', compact('barangs'));
+    }
+
+    public function generatePDF()
+    {
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        $barangs = Barang::with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors')->get();
+        $pdf = Pdf::loadView('dashboard.admin.barang.pdf', compact('barangs'))->setPaper('a4', 'landscape');
+        return $pdf->download('laporan_barang.pdf');
     }
 }

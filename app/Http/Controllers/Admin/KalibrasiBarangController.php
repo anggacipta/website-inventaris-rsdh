@@ -59,7 +59,7 @@ class KalibrasiBarangController extends Controller
                 $q->where('kondisi_barang', '!=', 'Rusak')
                 ->where('kondisi_barang', '!=', 'Digantikan');
             })
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->paginate(10)->appends($request->except('page'));
         $barangs->getCollection()->transform(function ($barang) {
             $barang->formatted_tanggal_kalibrasi = $barang->tanggal_kalibrasi
                 ? Carbon::parse($barang->tanggal_kalibrasi)->translatedFormat('d F Y')

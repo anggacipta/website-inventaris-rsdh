@@ -32,12 +32,19 @@ class ExportLaporanController extends Controller
         $this->format = $request->format_export;
         $unitKerja = $request->unit_kerja;
         $tahun = $request->tahun;
+        $jenisBarang = $request->jenis_barang;
 
         $query = Barang::with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors');
 
         if ($unitKerja) {
             $query->whereHas('unitKerja', function ($q) use ($unitKerja) {
                 $q->where('unit_kerja', $unitKerja);
+            });
+        }
+
+        if ($jenisBarang) {
+            $query->whereHas('jenisBarang', function ($q) use ($jenisBarang) {
+                $q->where('jenis_barang', $jenisBarang);
             });
         }
 
@@ -63,6 +70,7 @@ class ExportLaporanController extends Controller
     {
         $this->format = $request->format_export;
         $unitKerja = $request->unit_kerja;
+        $jenisBarang = $request->jenis_barang;
         $tahun = $request->tahun;
 
         $query = Barang::with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja', 'distributors');
@@ -70,6 +78,12 @@ class ExportLaporanController extends Controller
         if ($unitKerja) {
             $query->whereHas('unitKerja', function ($q) use ($unitKerja) {
                 $q->where('unit_kerja', $unitKerja);
+            });
+        }
+
+        if ($jenisBarang) {
+            $query->whereHas('jenisBarang', function ($q) use ($jenisBarang) {
+                $q->where('jenis_barang', $jenisBarang);
             });
         }
 

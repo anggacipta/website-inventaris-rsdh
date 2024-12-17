@@ -129,6 +129,14 @@
                             </select>
                         </div>
                         <div class="col-3">
+                            <select name="jenis_barang" class="form-control js-example-basic-single">
+                                <option value="">Pilih Jenis Barang</option>
+                                @foreach($jenisBarangs as $jenisBarang)
+                                    <option value="{{ $jenisBarang->jenis_barang }}">{{ $jenisBarang->jenis_barang }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-3">
                             <select name="unit_kerja" class="form-select me-2 js-example-basic-single">
                                 <option value="">Pilih Unit Kerja</option>
                                 @foreach($unitKerjas as $unitKerja)
@@ -144,7 +152,7 @@
                                 @endfor
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 mt-2">
                             <button type="submit" class="btn btn-primary" id="export-btn">
                                 Export
                                 <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>

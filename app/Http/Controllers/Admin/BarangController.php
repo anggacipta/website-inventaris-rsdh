@@ -81,8 +81,9 @@ class BarangController extends Controller
     public function trash()
     {
         $unitKerjas = UnitKerja::query()->where('unit_kerja', '!=', 'Default Kategori')->get();
+        $jenisBarangs = JenisBarang::query()->where('jenis_barang', '!=', 'Default Kategori')->get();
         $barangs = Barang::onlyTrashed()->with('jenisBarang', 'merkBarang', 'kondisiBarang', 'sumberPengadaan', 'unitKerja')->paginate(10);
-        return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs', 'unitKerjas'));
+        return view('dashboard.admin.barang.index_barang_dihapus', compact('barangs', 'unitKerjas', 'jenisBarangs'));
     }
 
     public function restore($id)

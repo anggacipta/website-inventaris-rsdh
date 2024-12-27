@@ -347,4 +347,67 @@ class MaintenanceController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat menghapus data maintenance');
         }
     }
+
+    public function createMaintenanceRusakLanjutan($maintenanceId)
+    {
+        try {
+            $kondisiBarang = KondisiBarang::where('kondisi_barang', 'like', 'Rusak')
+                ->orWhere('kondisi_barang', 'like', 'rusak')
+                ->firstOrFail();
+
+            $id = $kondisiBarang->id;
+
+            $maintenance = Maintenance::find($maintenanceId);
+            return view('dashboard.admin.maintenance.maintenance_rusak_lanjut', compact('maintenance', 'kondisiBarang'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error('Error in MaintenanceController@destroy: ', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data maintenance');
+        }
+    }
+
+    public function updateMaintenanceRusakLanjut(Request $request, $id)
+    {
+        try {
+            $maintenance = Maintenance::find($id);
+            $barangId = $maintenance->barang_id;
+            $barang = Barang::find($barangId);
+
+            $rusakKondisiBarangId = KondisiBarang::where('kondisi_barang', 'Rusak')->first()->id;
+
+            $barang->update([
+                'kondisi_barang_id' => $rusakKondisiBarangId
+            ]);
+
+            $maintenance->update([
+                'kondisi_barang_id' => $rusakKondisiBarangId,
+                'catatan' => $request->catatan,
+                'harga' => $request->harga,
+                'barang_id' => $request->barang_id,
+                'disetujui' => auth()->user()->name,
+            ]);
+
+            // Send message to all users except iprs and admin
+            $maintenance = Maintenance::find($id);
+//            $excludedRoles = Role::whereIn('name', ['iprs', 'server'])->pluck('id');
+//            $users = User::where('unit_kerja_id', $barang->unit_kerja_id)
+//                ->whereNotIn('role_id', $excludedRoles)
+//                ->get();
+//            $unitKerja = UnitKerja::find($barang->unit_kerja_id);
+//            $message = "Barang anda dinyatakan telah rusak" . "\n" .
+//                "Barang: " . $barang->nama_barang . "\n" .
+//                "Unit Kerja: " . $unitKerja->unit_kerja . "\n" .
+//                "Alasan Rusak: " . $maintenance->alasan_rusak . "\n" .
+//                "Catatan: " . $request->catatan . "\n";
+//
+//            foreach ($users as $user) {
+//                $this->fonnteService->sendMessage($user->phone, $message);
+//            }
+
+            return redirect()->route('maintenance.rusak.index')->with('error', 'Barang gagal diperbaiki');
+        } catch (\Exception $e) {
+            Log::error('Error in MaintenanceController@destroy: ', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data maintenance');
+        }
+    }
+
 }

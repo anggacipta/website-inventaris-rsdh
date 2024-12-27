@@ -35,13 +35,18 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form id="maintenanceForm" action="{{ route('maintenance.rusak.update', $maintenance->id) }}" method="post">
+                        <form id="maintenanceForm" action="{{ route('maintenance.rusak.update.lanjutan', $maintenance->id) }}" method="post">
                             @csrf
                             @method('PUT')
                             <input type="hidden" id="barangId" name="barang_id" value="{{ $maintenance->barang_id }}">
                             <div class="mb-3">
                                 <label for="keterangan" class="form-label">Catatan</label>
                                 <textarea class="form-control" name="catatan" id="keterangan" rows="6" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="biaya" class="form-label">Biaya Maintenance / Vendor(dapat diubah apabila ada pergantian harga)</label>
+                                <input type="text" id="formatted_harga" class="form-control" required value="{{ $maintenance->harga }}">
+                                <input type="hidden" name="harga" id="harga" value="{{ $maintenance->harga }}">
                             </div>
                             <div class="mb-3">
                                 <label for="kondisi_barang" class="form-label">Kondisi barang</label>

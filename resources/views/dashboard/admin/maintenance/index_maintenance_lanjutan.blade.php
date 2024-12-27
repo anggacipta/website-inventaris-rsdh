@@ -70,7 +70,7 @@
                                     <a href="{{ route('maintenance.diperbaiki.lanjutan', $maint->id) }}" class="btn btn-info">Berhasil Diperbaiki</a>
                                     @endcan
                                     @can('maintenance.rusak')
-                                        <a href="{{ route('maintenance.rusak', $maint->id) }}" class="btn btn-danger mt-2">Rusak</a>
+                                        <a href="{{ route('maintenance.rusak.lanjutan', $maint->id) }}" class="btn btn-danger mt-2">Rusak</a>
                                     @endcan
                                 @else
 

@@ -83,6 +83,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('maintenance-rusak', [\App\Http\Controllers\Admin\MaintenanceController::class, 'indexMaintenanceRusak'])->name('maintenance.rusak.index');
         Route::get('maintenance-rusak/{maintenanceId}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'createMaintenanceRusak'])->name('maintenance.rusak');
         Route::put('maintenance-rusak/{id}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateMaintenanceRusak'])->name('maintenance.rusak.update');
+        Route::get('maintenance-rusak-lanjut/{maintenanceId}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'createMaintenanceRusakLanjutan'])->name('maintenance.rusak.lanjutan');
+        Route::put('maintenance-rusak-lanjut/{id}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateMaintenanceRusakLanjut'])->name('maintenance.rusak.update.lanjutan');
         Route::get('barang-pergantian', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'index'])->name('penggantian.barang.index');
         Route::get('barang-pergantian/{id}', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'edit'])->name('penggantian.barang.edit');
         Route::put('barang-pergantian/{id}', [\App\Http\Controllers\Admin\PenggantianBarangController::class, 'update'])->name('penggantian.barang.update');
